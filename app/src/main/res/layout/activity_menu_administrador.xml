@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
+    android:padding="16dp"
+    tools:context=".MenuAdministradorActivity">
+
+    <!-- Título -->
+    <TextView
+        android:id="@+id/tvTitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="13dp"
+        android:fontFamily="@font/open_sans"
+        android:text="Floralia Mobile"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Imagen de perfil -->
+    <ImageView
+        android:id="@+id/imageViewPerfil"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="13dp"
+        android:background="@drawable/circle_background"
+        android:clickable="true"
+        android:contentDescription="Imagen de perfil"
+        android:focusable="true"
+        android:padding="4dp"
+        android:src="@drawable/usuario_empleado_cliente"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Subtítulo -->
+    <TextView
+        android:id="@+id/tvSubtitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/open_sans"
+        android:text="Menú principal de administrador"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvTitulo" />
+
+    <!-- Bienvenida -->
+    <TextView
+        android:id="@+id/tvBienvenida"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="50dp"
+        android:fontFamily="@font/open_sans"
+        android:text="Hola, Usuario!"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvSubtitulo"
+        card_view:layout_constraintBottom_toTopOf="@+id/scrollView" />
+
+    <!-- ScrollView con GridLayout -->
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toBottomOf="@id/tvBienvenida"
+        app:layout_constraintBottom_toTopOf="@id/CerrarSesion"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp">
+
+        <GridLayout
+            android:id="@+id/gridMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="2"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <!-- CARD 1: Agregar usuario -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/CardViewAgregarUsuario"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="8dp"
+                card_view:cardCornerRadius="12dp"
+                card_view:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:background="#F5F5F5">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/agregar_nuevo_usuario" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="@font/open_sans"
+                        android:text="Agregar Usuario"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- CARD 2: Inventario -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/CardViewInventario"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="8dp"
+                card_view:cardCornerRadius="12dp"
+                card_view:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:background="#F5F5F5">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/inventario" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Productos"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/open_sans" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- CARD 3: Historial de pedidos -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/CardViewHistorialdePedidos"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="8dp"
+                card_view:cardCornerRadius="12dp"
+                card_view:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:background="#F5F5F5">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/historial_de_pedidos" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Pedidos"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/open_sans" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- CARD 4: Gestión de usuarios -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/CardViewGestiondeUsuarios"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="8dp"
+                card_view:cardCornerRadius="12dp"
+                card_view:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:background="#F5F5F5">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/registro_de_roles" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Usuarios"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/open_sans" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- CARD 5: Corte de caja -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/CardViewCortesdeCaja"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="8dp"
+                card_view:cardCornerRadius="12dp"
+                card_view:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:background="#F5F5F5">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/generar_pedido" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="@font/open_sans"
+                        android:text="Cortes de Caja"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- CARD 6: Información de la aplicación -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/CardViewInformaciondelaAplicacion"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="8dp"
+                card_view:cardCornerRadius="12dp"
+                card_view:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:background="#F5F5F5">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/informacion_de_la_aplicacion" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="@font/open_sans"
+                        android:text="Info. de la Aplicación"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </GridLayout>
+    </ScrollView>
+
+    <!-- Cerrar sesión -->
+    <ImageView
+        android:id="@+id/CerrarSesion"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="13dp"
+        android:clickable="true"
+        android:contentDescription="Cerrar sesión"
+        android:focusable="true"
+        android:src="@drawable/cerrar_sesion"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        card_view:layout_constraintTop_toBottomOf="@+id/scrollView" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "351558539431",
+    "project_id": "floraliamobileapp",
+    "storage_bucket": "floraliamobileapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:351558539431:android:df7064049bbd782fd36382",
+        "android_client_info": {
+          "package_name": "com.example.floraliamobileapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFoiHmvxQ7o5dVdMKnTYLYGhalWV1pyWQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

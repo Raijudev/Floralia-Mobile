@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawerLayout"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fitsSystemWindows="true"
+    tools:context=".EditarProductoActivity">
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/white">
+
+        <!-- Header -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/headerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:background="@color/white"
+            android:elevation="4dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
+
+            <ImageView
+                android:id="@+id/imageViewBack"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:clickable="true"
+                android:contentDescription="Volver"
+                android:focusable="true"
+                android:src="@drawable/volver"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <TextView
+                android:id="@+id/textViewTitulo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:fontFamily="@font/open_sans"
+                android:text="Editar Producto"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toEndOf="@id/imageViewBack"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Icono del menú (logo Floralia) -->
+            <ImageView
+                android:id="@+id/imageViewMenu"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:clickable="true"
+                android:contentDescription="Abrir menú"
+                android:focusable="true"
+                android:src="@drawable/logo_floralia"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Contenido desplazable -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fillViewport="true"
+            android:padding="16dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <!-- Nombre -->
+                <EditText
+                    android:id="@+id/editTextNombre"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/edittext_background"
+                    android:fontFamily="@font/open_sans"
+                    android:hint="Nombre del Producto"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <!-- Cantidad -->
+                <EditText
+                    android:id="@+id/editTextCantidad"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/edittext_background"
+                    android:fontFamily="@font/open_sans"
+                    android:hint="Cantidad"
+                    android:inputType="number"
+                    android:textSize="14sp"
+                    app:layout_constraintTop_toBottomOf="@id/editTextNombre"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <!-- Precio Unitario -->
+                <EditText
+                    android:id="@+id/editTextPrecioUnitario"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/edittext_background"
+                    android:fontFamily="@font/open_sans"
+                    android:hint="Precio Unitario"
+                    android:inputType="numberDecimal"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/editTextCantidad" />
+
+                <!-- Imagen -->
+                <ImageView
+                    android:id="@+id/imageViewProducto"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_marginTop="60dp"
+                    android:background="@drawable/edittext_background"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/logo_floralia"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/editTextPrecioUnitario" />
+
+                <!-- Botón cargar imagen -->
+                <Button
+                    android:id="@+id/buttonCargarImagen"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="24dp"
+                    android:backgroundTint="@color/black"
+                    android:fontFamily="@font/open_sans"
+                    android:text="Cargar imagen"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/imageViewProducto"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintWidth_percent="0.6" />
+
+                <!-- Botón Actualizar -->
+                <Button
+                    android:id="@+id/buttonGuardarCambios"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="168dp"
+                    android:backgroundTint="@color/black"
+                    android:fontFamily="@font/open_sans"
+                    android:text="Editar"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/buttonCargarImagen"
+                    app:layout_constraintWidth_percent="0.6" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+    </LinearLayout>
+
+    <!-- MENÚ LATERAL (Drawer derecho) -->
+    <LinearLayout
+        android:id="@+id/navigationDrawer"
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:orientation="vertical"
+        android:background="@android:color/white"
+        android:padding="16dp"
+        android:focusableInTouchMode="true">
+
+        <!-- Encabezado: título a la izquierda y logo a la derecha -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="24dp"
+            android:layout_marginBottom="12dp">
+
+            <TextView
+                android:id="@+id/textViewMenuTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:fontFamily="@font/open_sans"
+                android:text="Floralia Mobile"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/imageViewMenuLogo"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageViewMenuLogo"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:contentDescription="Logo Floralia"
+                android:src="@drawable/logo_floralia"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Línea divisora -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Opciones del menú con efecto ripple -->
+        <TextView
+            android:id="@+id/menuAgregarUsuario"
+            android:textSize="16sp"
+            style="@style/DrawerMenuItem"
+            android:text="Agregar Usuario"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="12dp" />
+
+        <TextView
+            android:id="@+id/menuProductos"
+            android:textSize="16sp"
+            style="@style/DrawerMenuItem"
+            android:text="Productos"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="12dp" />
+
+        <TextView
+            android:id="@+id/menuAgregarProducto"
+            android:textSize="16sp"
+            style="@style/DrawerMenuItem"
+            android:text="Agregar Producto"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="12dp" />
+
+        <TextView
+            android:id="@+id/menuPedidos"
+            android:textSize="16sp"
+            style="@style/DrawerMenuItem"
+            android:text="Pedidos"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="12dp" />
+
+        <TextView
+            android:id="@+id/menuUsuarios"
+            android:textSize="16sp"
+            style="@style/DrawerMenuItem"
+            android:text="Usuarios"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="12dp" />
+
+        <TextView
+            android:id="@+id/menuCortesdeCaja"
+            android:textSize="16sp"
+            style="@style/DrawerMenuItem"
+            android:text="Cortes de Caja"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="12dp" />
+
+        <TextView
+            android:id="@+id/menuInfoApp"
+            android:textSize="16sp"
+            style="@style/DrawerMenuItem"
+            android:text="Info. de la Aplicación"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="12dp" />
+    </LinearLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

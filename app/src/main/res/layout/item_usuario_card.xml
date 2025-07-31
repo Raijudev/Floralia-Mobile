@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:background="@color/white"
+    card_view:cardCornerRadius="12dp"
+    card_view:cardElevation="4dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp">
+
+        <!-- Imagen del rol del usuario -->
+        <ImageView
+            android:id="@+id/imageViewRol"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/administrador" />
+
+        <!-- Nombre y apellido del usuario -->
+        <TextView
+            android:id="@+id/textViewNombreUsuario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/imageViewRol"
+            android:layout_marginStart="12dp"
+            android:layout_toEndOf="@id/imageViewRol"
+            android:fontFamily="@font/open_sans"
+            android:text="Usuario Prueba"
+            android:textAlignment="viewStart"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <!-- Rol del usuario -->
+        <TextView
+            android:id="@+id/textViewRolUsuario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textViewNombreUsuario"
+            android:layout_alignStart="@id/textViewNombreUsuario"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/open_sans"
+            android:text="Administrador"
+            android:textColor="#555"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

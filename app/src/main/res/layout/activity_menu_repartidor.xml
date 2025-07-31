@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tvTitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="@font/open_sans"
+        android:text="Floralia Mobile"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvSubtitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvTitulo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="2dp"
+        android:fontFamily="@font/open_sans"
+        android:text="Menú principal de repartidor"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/ImageViewAbrirAgregarProducto"
+        android:layout_below="@id/tvTitulo">
+
+        <GridLayout
+            android:id="@+id/gridMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvSubtitulo"
+            android:layout_marginTop="140dp"
+            android:layout_marginBottom="80dp"
+            android:columnCount="2"
+            android:orientation="horizontal">
+
+            <!-- Card 1: Pedidos pendientes -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/CardViewPedidosPendientes"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="8dp"
+                android:onClick="onAgregarUsuarioClick"
+                card_view:cardCornerRadius="12dp"
+                card_view:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#F5F5F5"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/pedidos_pendientes" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="@font/open_sans"
+                        android:text="Pedidos pendientes"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Card 2: informacion de la aplicacion -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/CardViewInformaciondelaAplicacion"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="8dp"
+                android:onClick="onAgregarUsuarioClick"
+                card_view:cardCornerRadius="12dp"
+                card_view:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#F5F5F5"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/informacion_de_la_aplicacion" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="@font/open_sans"
+                        android:text="Info. de la aplicación"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </GridLayout>
+    </ScrollView>
+
+    <ImageView
+        android:id="@+id/ImageViewAbrirAgregarProducto"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="0dp"
+        android:clickable="true"
+        android:contentDescription="Cerrar sesión"
+        android:focusable="true"
+        android:src="@drawable/cerrar_sesion" />
+
+</RelativeLayout>

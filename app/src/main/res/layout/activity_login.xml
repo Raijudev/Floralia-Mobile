@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@color/white"
+    tools:context=".LoginActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/loginLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="24dp"
+            android:paddingBottom="24dp">
+
+            <!-- Logo centrado -->
+            <ImageView
+                android:id="@+id/logoImage"
+                android:layout_width="160dp"
+                android:layout_height="120dp"
+                android:contentDescription="@string/logo"
+                android:src="@drawable/logo_floralia"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- Bienvenido -->
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/open_sans"
+                android:text="@string/bienvenido"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/logoImage" />
+
+            <!-- Inicio de sesión -->
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/open_sans"
+                android:text="@string/inicio_de_sesi_n"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/textView1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- Descripción -->
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/open_sans"
+                android:text="Ingrese su correo y contraseña para continuar"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/textView2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- Email -->
+            <EditText
+                android:id="@+id/editTextTextEmailAddress1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:hint="@string/email_domain_com"
+                android:inputType="textEmailAddress"
+                android:padding="12dp"
+                android:textSize="14sp"
+                android:background="@drawable/edittext_background"
+                android:fontFamily="@font/open_sans"
+                app:layout_constraintTop_toBottomOf="@id/textView3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- Contraseña -->
+            <EditText
+                android:id="@+id/editTextTextPassword1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:hint="@string/contrase_a"
+                android:inputType="textPassword"
+                android:padding="12dp"
+                android:textSize="14sp"
+                android:background="@drawable/edittext_background"
+                android:fontFamily="@font/open_sans"
+                app:layout_constraintTop_toBottomOf="@id/editTextTextEmailAddress1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- Botón Continuar -->
+            <Button
+                android:id="@+id/buttonContinuar"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="24dp"
+                android:text="@string/continuar"
+                android:textColor="@android:color/white"
+                android:backgroundTint="@color/black"
+                android:textStyle="bold"
+                android:fontFamily="@font/open_sans"
+                app:layout_constraintTop_toBottomOf="@id/editTextTextPassword1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
+</ScrollView>

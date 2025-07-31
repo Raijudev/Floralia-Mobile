@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    card_view:cardCornerRadius="16dp"
+    android:layout_margin="10dp"
+    android:elevation="8dp"
+    android:backgroundTint="@android:color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/txtUidCorte"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:fontFamily="@font/open_sans"
+                android:text="UID: "
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/imgDownloadPdf"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_download"
+                android:contentDescription="Descargar PDF"
+                android:padding="4dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackgroundBorderless"/>
+
+        </RelativeLayout>
+
+
+        <TextView
+            android:id="@+id/txtFechas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/open_sans"
+            android:text="De 01/07/2025 08:00 a 01/07/2025 20:00"
+            android:textColor="#555555"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/txtGeneradoPor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:fontFamily="@font/open_sans"
+            android:text="Generado por: Admin"
+            android:textColor="#555555"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/txtTotalPedidos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:fontFamily="@font/open_sans"
+            android:text="Pedidos: 25"
+            android:textColor="#555555"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/txtTotalVentas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:fontFamily="@font/open_sans"
+            android:text="Ventas: $1,500.00"
+            android:textColor="#27AE60"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

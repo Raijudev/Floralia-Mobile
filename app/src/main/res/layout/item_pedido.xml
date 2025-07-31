@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:background="@color/white"
+    card_view:cardCornerRadius="12dp"
+    card_view:cardElevation="4dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="9dp">
+
+        <TextView
+            android:id="@+id/textUidPedido"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginBottom="4dp"
+            android:text="UID:"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textFecha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textUidPedido"
+            android:layout_alignStart="@id/textUidPedido"
+            android:layout_marginTop="6dp"
+            android:text="Fecha:"
+            android:textColor="#555555"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/textCliente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textFecha"
+            android:layout_alignStart="@id/textFecha"
+            android:layout_marginTop="4dp"
+            android:text="Cliente:"
+            android:textColor="#555555"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/textMetodo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textCliente"
+            android:layout_alignStart="@id/textCliente"
+            android:layout_marginTop="4dp"
+            android:text="Pago:"
+            android:textColor="#555555"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/textEstado"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textMetodo"
+            android:layout_alignStart="@id/textMetodo"
+            android:layout_marginTop="4dp"
+            android:text="Estado:"
+            android:textColor="#555555"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/textTotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textFecha"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="8dp"
+            android:text="$000.00"
+            android:textColor="#27AE60"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/imageViewDescargarPdf"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_below="@id/textTotal"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="4dp"
+            android:contentDescription="Descargar PDF"
+            android:src="@drawable/ic_download" />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <!-- Header típico con botón de retroceso y título -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:background="@color/white"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/imageViewBack"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/volver"
+            android:contentDescription="Volver"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <TextView
+            android:id="@+id/textViewTitulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="16dp"
+            android:layout_toEndOf="@id/imageViewBack"
+            android:fontFamily="@font/open_sans"
+            android:text="Detalles del pedido"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <!-- Contenido desplazable -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:padding="16dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- Número Pedido -->
+            <TextView
+                android:id="@+id/tvUidPedido"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/open_sans"
+                android:text="UID:"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Fecha Creación -->
+            <TextView
+                android:id="@+id/tvFechaCreacion"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Fecha Creación:"
+                android:textColor="@color/black"
+                android:fontFamily="@font/open_sans"
+                app:layout_constraintTop_toBottomOf="@id/tvUidPedido"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="8dp" />
+
+            <!-- Fecha Entrega -->
+            <TextView
+                android:id="@+id/tvFechaEntrega"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Fecha Entrega:"
+                android:textColor="@color/black"
+                android:fontFamily="@font/open_sans"
+                app:layout_constraintTop_toBottomOf="@id/tvFechaCreacion"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="8dp" />
+
+            <!-- Estado -->
+            <TextView
+                android:id="@+id/tvEstadoPedido"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Estado:"
+                android:textColor="@color/black"
+                android:fontFamily="@font/open_sans"
+                app:layout_constraintTop_toBottomOf="@id/tvFechaEntrega"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="8dp" />
+
+            <!-- Tipo de pedido -->
+            <TextView
+                android:id="@+id/tvTipoPedido"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Tipo de pedido:"
+                android:textColor="@color/black"
+                android:fontFamily="@font/open_sans"
+                app:layout_constraintTop_toBottomOf="@id/tvEstadoPedido"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="8dp" />
+
+            <!-- Cliente -->
+            <TextView
+                android:id="@+id/tvCliente"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Cliente:"
+                android:textColor="@color/black"
+                android:fontFamily="@font/open_sans"
+                app:layout_constraintTop_toBottomOf="@id/tvTipoPedido"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="8dp" />
+
+            <!-- Domicilio -->
+            <TextView
+                android:id="@+id/tvDomicilio"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Domicilio:"
+                android:textColor="@color/black"
+                android:fontFamily="@font/open_sans"
+                app:layout_constraintTop_toBottomOf="@id/tvCliente"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="8dp" />
+
+            <!-- Entregado por -->
+            <TextView
+                android:id="@+id/tvEntregadoPor"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Entregado por:"
+                android:textColor="@color/black"
+                android:fontFamily="@font/open_sans"
+                app:layout_constraintTop_toBottomOf="@id/tvDomicilio"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="8dp" />
+
+            <!-- Registrado por -->
+            <TextView
+                android:id="@+id/tvRegistradoPor"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Registrado por:"
+                android:textColor="@color/black"
+                android:fontFamily="@font/open_sans"
+                app:layout_constraintTop_toBottomOf="@id/tvEntregadoPor"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="8dp" />
+
+            <!-- Método de Pago -->
+            <TextView
+                android:id="@+id/tvMetodoPago"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Método de Pago:"
+                android:textColor="@color/black"
+                android:fontFamily="@font/open_sans"
+                app:layout_constraintTop_toBottomOf="@id/tvRegistradoPor"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="8dp" />
+
+            <!-- Subtotal -->
+            <TextView
+                android:id="@+id/tvSubTotal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Subtotal:"
+                android:textColor="@color/black"
+                android:fontFamily="@font/open_sans"
+                app:layout_constraintTop_toBottomOf="@id/tvMetodoPago"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="8dp" />
+
+            <!-- Impuestos -->
+            <TextView
+                android:id="@+id/tvImpuestos"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Impuestos:"
+                android:textColor="@color/black"
+                android:fontFamily="@font/open_sans"
+                app:layout_constraintTop_toBottomOf="@id/tvSubTotal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="8dp" />
+
+            <!-- Total final -->
+            <TextView
+                android:id="@+id/tvTotalFinal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Total final:"
+                android:textColor="@color/black"
+                android:fontFamily="@font/open_sans"
+                app:layout_constraintTop_toBottomOf="@id/tvImpuestos"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="8dp" />
+
+            <!-- Puntos antes compra -->
+            <TextView
+                android:id="@+id/tvPuntosAntesCompra"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Puntos antes de la compra:"
+                android:textColor="@color/black"
+                android:fontFamily="@font/open_sans"
+                app:layout_constraintTop_toBottomOf="@id/tvTotalFinal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="8dp" />
+
+            <!-- Puntos descontados -->
+            <TextView
+                android:id="@+id/tvPuntosDescontados"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Puntos descontados:"
+                android:textColor="@color/black"
+                android:fontFamily="@font/open_sans"
+                app:layout_constraintTop_toBottomOf="@id/tvPuntosAntesCompra"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="8dp" />
+
+            <!-- Puntos ganados -->
+            <TextView
+                android:id="@+id/tvPuntosGanados"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Puntos ganados:"
+                android:textColor="@color/black"
+                android:fontFamily="@font/open_sans"
+                app:layout_constraintTop_toBottomOf="@id/tvPuntosDescontados"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="8dp" />
+
+            <!-- Puntos totales -->
+            <TextView
+                android:id="@+id/tvPuntosTotales"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Puntos totales:"
+                android:textColor="@color/black"
+                android:fontFamily="@font/open_sans"
+                app:layout_constraintTop_toBottomOf="@id/tvPuntosGanados"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="8dp" />
+
+            <!-- ID Tarjeta NFC -->
+            <TextView
+                android:id="@+id/tvIdTarjetaNFC"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="ID Tarjeta NFC:"
+                android:textColor="@color/black"
+                android:fontFamily="@font/open_sans"
+                app:layout_constraintTop_toBottomOf="@id/tvPuntosTotales"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="8dp" />
+
+            <!-- Título Productos -->
+            <TextView
+                android:id="@+id/tvTituloProductos"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Productos:"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:fontFamily="@font/open_sans"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@id/tvIdTarjetaNFC"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <!-- RecyclerView Productos -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerProductos"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:nestedScrollingEnabled="false"
+                app:layout_constraintTop_toBottomOf="@id/tvTituloProductos"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="8dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</LinearLayout>

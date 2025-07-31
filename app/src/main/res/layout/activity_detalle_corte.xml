@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/white">
+
+    <!-- Header fijo con botón de retroceso y título -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:background="@android:color/white"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/btnBackDetalle"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerVertical="true"
+            android:clickable="true"
+            android:contentDescription="Volver"
+            android:focusable="true"
+            android:src="@drawable/volver" />
+
+        <TextView
+            android:id="@+id/txtTitulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="16dp"
+            android:layout_toEndOf="@id/btnBackDetalle"
+            android:fontFamily="@font/open_sans"
+            android:text="Detalles del corte"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <!-- Contenido desplazable -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtUidCorte"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:fontFamily="@font/open_sans"
+                android:text="UID:"
+                android:textColor="#555555"
+                android:textSize="14sp" />
+
+            <!-- Subtítulo -->
+            <TextView
+                android:id="@+id/txtGeneradoPorDetalle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:fontFamily="@font/open_sans"
+                android:text="Generado por: Admin"
+                android:textColor="#555555"
+                android:textSize="14sp" />
+
+            <!-- Fechas -->
+            <TextView
+                android:id="@+id/txtFechaInicial"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:fontFamily="@font/open_sans"
+                android:text="Inicio:"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/txtFechaFinal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:fontFamily="@font/open_sans"
+                android:text="Final:"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/txtFechaCreacion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:fontFamily="@font/open_sans"
+                android:text="Creado el:"
+                android:textSize="14sp" />
+
+            <!-- Separador -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#CCCCCC"
+                android:layout_marginVertical="12dp" />
+
+            <!-- Datos numéricos -->
+            <TextView
+                android:id="@+id/txtTotalPedidosDetalle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:fontFamily="@font/open_sans"
+                android:text="Total pedidos: 0"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtTotalVentasDetalle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:fontFamily="@font/open_sans"
+                android:text="Total ventas: $0.00"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <!-- Métodos de pago -->
+            <TextView
+                android:id="@+id/txtEfectivo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:fontFamily="@font/open_sans"
+                android:text="Efectivo: $0.00"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/txtTransferencia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:fontFamily="@font/open_sans"
+                android:text="Transferencia: $0.00"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/txtTarjeta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:fontFamily="@font/open_sans"
+                android:text="Tarjeta: $0.00"
+                android:textSize="14sp" />
+
+            <!-- Puntos -->
+            <TextView
+                android:id="@+id/txtPuntos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:fontFamily="@font/open_sans"
+                android:text="Puntos: 0.00"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/txtGanados"
+                android:layout_width="match_parent"
+                android:layout_height="21dp"
+                android:layout_marginBottom="4dp"
+                android:fontFamily="@font/open_sans"
+                android:text="Puntos ganados: 0.00"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/txtUsados"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:fontFamily="@font/open_sans"
+                android:text="Puntos usados: 0.00"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/open_sans"
+                android:text="Pedidos del Corte"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="horizontal"
+                android:background="@android:color/white"
+                android:padding="8dp">
+
+                <ScrollView
+                    android:layout_width="wrap_content"
+                    android:layout_height="250dp"
+                    android:scrollbars="vertical"
+                    android:background="@drawable/tabla_con_borde">
+
+                    <TableLayout
+                        android:id="@+id/tablePedidos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:stretchColumns="*"
+                        android:shrinkColumns="*"
+                        android:padding="8dp"
+                        android:background="@android:color/white" />
+                </ScrollView>
+            </HorizontalScrollView>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
