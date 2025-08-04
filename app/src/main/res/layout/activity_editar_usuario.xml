@@ -6,250 +6,292 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    tools:context=".EditarUsuarioActivity"> <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
-    <!-- CONTENIDO PRINCIPAL -->
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/headerLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/white">
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/pink_enviaflores"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <!-- Header -->
+        <TextView
+            android:id="@+id/textViewTitulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/albert_sans"
+            android:text="editar usuario"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageViewMenu"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="16dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:contentDescription="Abrir menú"
+            android:src="@drawable/logo_floralia"
+            app:tint="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="?attr/selectableItemBackgroundBorderless"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toBottomOf="@id/headerLayout"
+        app:layout_constraintBottom_toTopOf="@id/backButtonContainer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp">
+
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/headerLayout"
             android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:background="@color/white"
-            android:elevation="4dp"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp">
+            android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/imageViewBack"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:clickable="true"
-                android:contentDescription="Volver"
-                android:focusable="true"
-                android:src="@drawable/volver"
-                app:layout_constraintBottom_toBottomOf="parent"
+            <EditText
+                android:id="@+id/editTextNombre"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/edittext_bottom_line"
+                android:fontFamily="@font/albert_sans"
+                android:hint="Nombre"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray_light_text"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/textViewTitulo"
-                android:layout_width="wrap_content"
+            <EditText
+                android:id="@+id/editTextApellido"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:fontFamily="@font/open_sans"
-                android:text="Editar Usuario"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/edittext_bottom_line"
+                android:fontFamily="@font/albert_sans"
+                android:hint="Apellido"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
                 android:textColor="@color/black"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/imageViewMenu"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toEndOf="@id/imageViewBack"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <!-- Icono del menú (logo Floralia) -->
-            <ImageView
-                android:id="@+id/imageViewMenu"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:clickable="true"
-                android:contentDescription="Abrir menú"
-                android:focusable="true"
-                android:src="@drawable/logo_floralia"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:textColorHint="@color/gray_light_text"
+                android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/editTextNombre" />
 
-        <!-- Contenido scrollable -->
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:fillViewport="true"
-            android:padding="16dp">
+            <EditText
+                android:id="@+id/editTextTelefono"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/edittext_bottom_line"
+                android:fontFamily="@font/albert_sans"
+                android:hint="Teléfono"
+                android:inputType="phone"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray_light_text"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/editTextApellido" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/editTextDomicilio"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/edittext_bottom_line"
+                android:fontFamily="@font/albert_sans"
+                android:hint="Domicilio"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray_light_text"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/editTextTelefono" />
 
-                <!-- Nombre -->
-                <EditText
-                    android:id="@+id/editTextNombre"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:background="@drawable/edittext_background"
-                    android:fontFamily="@font/open_sans"
-                    android:hint="Nombre"
-                    android:textSize="14sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <EditText
+                android:id="@+id/editTextCurp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/edittext_bottom_line"
+                android:fontFamily="@font/albert_sans"
+                android:hint="CURP"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray_light_text"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/editTextDomicilio" />
 
-                <!-- Apellido -->
-                <EditText
-                    android:id="@+id/editTextApellido"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:background="@drawable/edittext_background"
-                    android:fontFamily="@font/open_sans"
-                    android:hint="Apellido"
-                    android:textSize="14sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/editTextNombre" />
+            <Spinner
+                android:id="@+id/spinnerRol"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/edittext_bottom_line"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                app:layout_constraintTop_toBottomOf="@id/editTextCurp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
-                <!-- Teléfono -->
-                <EditText
-                    android:id="@+id/editTextTelefono"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:background="@drawable/edittext_background"
-                    android:fontFamily="@font/open_sans"
-                    android:hint="Teléfono"
-                    android:inputType="phone"
-                    android:textSize="14sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/editTextApellido" />
+            <EditText
+                android:id="@+id/editTextIdTarjeta"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/edittext_bottom_line"
+                android:fontFamily="@font/albert_sans"
+                android:hint="ID Tarjeta NFC"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray_light_text"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/spinnerRol" />
 
-                <!-- Domicilio -->
-                <EditText
-                    android:id="@+id/editTextDomicilio"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:background="@drawable/edittext_background"
-                    android:fontFamily="@font/open_sans"
-                    android:hint="Domicilio"
-                    android:textSize="14sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/editTextTelefono" />
+            <EditText
+                android:id="@+id/editTextPuntos"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/edittext_bottom_line"
+                android:fontFamily="@font/albert_sans"
+                android:focusable="false"
+                android:clickable="false"
+                android:cursorVisible="false"
+                android:inputType="none"
+                android:hint="Puntos"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray_light_text"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/editTextIdTarjeta" />
 
-                <!-- CURP -->
-                <EditText
-                    android:id="@+id/editTextCurp"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:background="@drawable/edittext_background"
-                    android:fontFamily="@font/open_sans"
-                    android:hint="Curp"
-                    android:textSize="14sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/editTextDomicilio" />
+            <EditText
+                android:id="@+id/editTextFechaActivacion"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/edittext_bottom_line"
+                android:focusable="false"
+                android:clickable="false"
+                android:cursorVisible="false"
+                android:inputType="none"
+                android:fontFamily="@font/albert_sans"
+                android:hint="Fecha de Activación"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray_light_text"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/editTextPuntos" />
 
-                <!-- Rol -->
-                <Spinner
-                    android:id="@+id/spinnerRol"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    app:layout_constraintTop_toBottomOf="@id/editTextCurp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
+            <EditText
+                android:id="@+id/editTextFechaVencimiento"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/edittext_bottom_line"
+                android:clickable="false"
+                android:cursorVisible="false"
+                android:inputType="none"
+                android:focusable="false"
+                android:fontFamily="@font/albert_sans"
+                android:hint="Fecha de Vencimiento"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray_light_text"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/editTextFechaActivacion" />
 
-                <!-- ID Tarjeta NFC -->
-                <EditText
-                    android:id="@+id/editTextIdTarjeta"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:background="@drawable/edittext_background"
-                    android:fontFamily="@font/open_sans"
-                    android:hint="ID Tarjeta NFC"
-                    android:textSize="14sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/spinnerRol" />
+            <Button
+                android:id="@+id/buttonGuardarCambios"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/button_outline_pink"
+                android:fontFamily="@font/albert_sans"
+                android:text="Editar Usuario"
+                android:textColor="@color/pink_enviaflores"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:padding="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/editTextFechaVencimiento"
+                app:layout_constraintBottom_toBottomOf="parent" /> </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
-                <!-- Puntos -->
-                <EditText
-                    android:id="@+id/editTextPuntos"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:background="@drawable/edittext_background"
-                    android:fontFamily="@font/open_sans"
-                    android:focusable="false"
-                    android:clickable="false"
-                    android:cursorVisible="false"
-                    android:inputType="none"
-                    android:hint="Puntos"
-                    android:textSize="14sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/editTextIdTarjeta" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/backButtonContainer"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@color/white"
+        android:elevation="4dp">
 
-                <!-- Fecha Activación -->
-                <EditText
-                    android:id="@+id/editTextFechaActivacion"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:background="@drawable/edittext_background"
-                    android:focusable="false"
-                    android:clickable="false"
-                    android:cursorVisible="false"
-                    android:inputType="none"
-                    android:fontFamily="@font/open_sans"
-                    android:hint="Fecha de Activación"
-                    android:textSize="14sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/editTextPuntos" />
+        <ImageView
+            android:id="@+id/imageViewBack"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="16dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:contentDescription="Volver"
+            android:focusable="true"
+            android:src="@drawable/volver"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/pink_enviaflores" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <!-- Fecha Vencimiento -->
-                <EditText
-                    android:id="@+id/editTextFechaVencimiento"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:background="@drawable/edittext_background"
-                    android:clickable="false"
-                    android:cursorVisible="false"
-                    android:inputType="none"
-                    android:focusable="false"
-                    android:fontFamily="@font/open_sans"
-                    android:hint="Fecha de Vencimiento"
-                    android:textSize="14sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/editTextFechaActivacion" />
+</androidx.constraintlayout.widget.ConstraintLayout>
 
-                <!-- Botón Guardar Cambios -->
-                <Button
-                    android:id="@+id/buttonGuardarCambios"
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="24dp"
-                    android:backgroundTint="@color/black"
-                    android:fontFamily="@font/open_sans"
-                    android:text="Editar"
-                    android:textColor="@android:color/white"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/editTextFechaVencimiento"
-                    app:layout_constraintWidth_percent="0.6" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </ScrollView>
-
-    </LinearLayout>
-
-    <!-- MENÚ LATERAL (Drawer derecho) -->
     <LinearLayout
         android:id="@+id/navigationDrawer"
         android:layout_width="300dp"
@@ -260,25 +302,23 @@
         android:padding="16dp"
         android:focusableInTouchMode="true">
 
-        <!-- Encabezado: título a la izquierda y logo a la derecha -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="24dp"
-            android:layout_marginBottom="12dp">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp">
 
             <TextView
                 android:id="@+id/textViewMenuTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:fontFamily="@font/open_sans"
-                android:text="Floralia Mobile"
-                android:textColor="@color/black"
-                android:textSize="18sp"
+                android:fontFamily="@font/albert_sans"
+                android:text="floralia mobile"
+                android:textColor="@color/pink_enviaflores"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/imageViewMenuLogo"
-                app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -290,23 +330,26 @@
                 android:focusable="true"
                 android:contentDescription="Logo Floralia"
                 android:src="@drawable/logo_floralia"
+                app:tint="@color/pink_enviaflores"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:background="?attr/selectableItemBackgroundBorderless" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!-- Línea divisora -->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@android:color/darker_gray"
             android:layout_marginBottom="12dp" />
 
-        <!-- Opciones del menú con efecto ripple -->
         <TextView
             android:id="@+id/menuAgregarUsuario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:textSize="16sp"
-            style="@style/DrawerMenuItem"
+            android:fontFamily="@font/albert_sans"
+            android:textColor="@color/pink_enviaflores"
             android:text="Agregar Usuario"
             android:background="?android:attr/selectableItemBackground"
             android:clickable="true"
@@ -315,8 +358,11 @@
 
         <TextView
             android:id="@+id/menuProductos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:textSize="16sp"
-            style="@style/DrawerMenuItem"
+            android:fontFamily="@font/albert_sans"
+            android:textColor="@color/pink_enviaflores"
             android:text="Productos"
             android:background="?android:attr/selectableItemBackground"
             android:clickable="true"
@@ -324,19 +370,12 @@
             android:padding="12dp" />
 
         <TextView
-            android:id="@+id/menuAgregarProducto"
-            android:textSize="16sp"
-            style="@style/DrawerMenuItem"
-            android:text="Agregar Producto"
-            android:background="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
-            android:padding="12dp" />
-
-        <TextView
             android:id="@+id/menuPedidos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:textSize="16sp"
-            style="@style/DrawerMenuItem"
+            android:fontFamily="@font/albert_sans"
+            android:textColor="@color/pink_enviaflores"
             android:text="Pedidos"
             android:background="?android:attr/selectableItemBackground"
             android:clickable="true"
@@ -345,8 +384,11 @@
 
         <TextView
             android:id="@+id/menuUsuarios"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:textSize="16sp"
-            style="@style/DrawerMenuItem"
+            android:fontFamily="@font/albert_sans"
+            android:textColor="@color/pink_enviaflores"
             android:text="Usuarios"
             android:background="?android:attr/selectableItemBackground"
             android:clickable="true"
@@ -355,8 +397,11 @@
 
         <TextView
             android:id="@+id/menuCortesdeCaja"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:textSize="16sp"
-            style="@style/DrawerMenuItem"
+            android:fontFamily="@font/albert_sans"
+            android:textColor="@color/pink_enviaflores"
             android:text="Cortes de Caja"
             android:background="?android:attr/selectableItemBackground"
             android:clickable="true"
@@ -365,8 +410,11 @@
 
         <TextView
             android:id="@+id/menuInfoApp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:textSize="16sp"
-            style="@style/DrawerMenuItem"
+            android:fontFamily="@font/albert_sans"
+            android:textColor="@color/pink_enviaflores"
             android:text="Info. de la Aplicación"
             android:background="?android:attr/selectableItemBackground"
             android:clickable="true"

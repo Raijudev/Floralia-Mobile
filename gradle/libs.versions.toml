@@ -13,7 +13,8 @@ composeBom = "2025.06.00"
 googleGmsGoogleServices = "4.4.2"
 appcompat = "1.7.1"
 recyclerview = "1.4.0"
-firebase-bom = "32.8.1" # Asegúrate de que esta sea la última versión estable de Firebase BoM
+firebase-bom = "32.8.1"
+material = "1.12.0" # Asegúrate de que esta sea la última versión estable de Firebase BoM
 
 [libraries]
 androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
@@ -38,6 +39,7 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 cardview = { group = "androidx.cardview", name = "cardview", version = "1.0.0" }
 androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 [plugins] # <-- ¡ESTA ES LA SECCIÓN QUE PUEDE FALTARTE Y QUE MENCIONÉ ANTES!
 android-application = { id = "com.android.application", version.ref = "agp" }

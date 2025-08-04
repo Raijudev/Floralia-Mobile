@@ -1,55 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     android:background="@color/white"
     card_view:cardCornerRadius="12dp"
-    card_view:cardElevation="4dp">
+    card_view:cardElevation="4dp"
+    card_view:cardUseCompatPadding="true"
+    android:foreground="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="12dp">
+        android:padding="12dp"
+        xmlns:app="http://schemas.android.com/apk/res-auto"> <ImageView
+        android:id="@+id/imageViewRol"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/administrador"
+        android:background="@drawable/image_rounded_corners_bordered"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:src="@drawable/administrador" />
 
-        <!-- Imagen del rol del usuario -->
-        <ImageView
-            android:id="@+id/imageViewRol"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:scaleType="centerCrop"
-            android:src="@drawable/administrador" />
-
-        <!-- Nombre y apellido del usuario -->
         <TextView
             android:id="@+id/textViewNombreUsuario"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@id/imageViewRol"
-            android:layout_marginStart="12dp"
-            android:layout_toEndOf="@id/imageViewRol"
-            android:fontFamily="@font/open_sans"
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/albert_sans"
             android:text="Usuario Prueba"
-            android:textAlignment="viewStart"
             android:textColor="@color/black"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:maxLines="1"
+            android:ellipsize="end"
+            app:layout_constraintStart_toEndOf="@id/imageViewRol"
+            app:layout_constraintTop_toTopOf="@id/imageViewRol"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="Usuario de Ejemplo Muy Largo para Ver Ellipsize" />
 
-        <!-- Rol del usuario -->
         <TextView
             android:id="@+id/textViewRolUsuario"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/textViewNombreUsuario"
-            android:layout_alignStart="@id/textViewNombreUsuario"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
-            android:fontFamily="@font/open_sans"
+            android:fontFamily="@font/albert_sans"
             android:text="Administrador"
-            android:textColor="#555"
-            android:textSize="14sp" />
-    </RelativeLayout>
+            android:textColor="#555555"
+            android:textSize="14sp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            app:layout_constraintStart_toEndOf="@id/imageViewRol"
+            app:layout_constraintTop_toBottomOf="@id/textViewNombreUsuario"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="Tipo de Rol Muy Específico y Extenso" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

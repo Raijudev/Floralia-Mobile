@@ -40,7 +40,7 @@ class MenuAdministradorActivity : AppCompatActivity() {
                         val rol = document.getString("rol") ?: ""
 
                         // Mostrar saludo personalizado
-                        tvBienvenida.text = "Hola, $nombre $apellido!"
+                        tvBienvenida.text = "Bienvenido, $nombre $apellido!"
 
                         // Asignar imagen según el rol
                         when (rol.lowercase()) {
@@ -93,8 +93,8 @@ class MenuAdministradorActivity : AppCompatActivity() {
         }
 
         // Botón de cerrar sesión
-        findViewById<ImageView>(R.id.CerrarSesion).setOnClickListener {
-            // ⚠️ **Importante:** Asegúrate de que este ImageView no se toque accidentalmente.
+        findViewById< TextView>(R.id.tvCerrarSesion).setOnClickListener {
+            // ⚠️ **Importante:** Asegúrate de que este TextView no se toque accidentalmente.
             // Considera su posición y tamaño en el diseño.
 
             // Crea un AlertDialog para confirmar el cierre de sesión

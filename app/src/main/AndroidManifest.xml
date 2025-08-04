@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
@@ -15,16 +15,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FloraliaMobileApp"
-        tools:targetApi="31">
-        <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="${applicationId}.provider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
-        </provider>
+        tools:targetApi="31"
+        android:requestLegacyExternalStorage="true"> <provider
+        android:name="androidx.core.content.FileProvider"
+        android:authorities="${applicationId}.provider"
+        android:exported="false"
+        android:grantUriPermissions="true">
+        <meta-data
+            android:name="android.support.FILE_PROVIDER_PATHS"
+            android:resource="@xml/file_paths" />
+    </provider>
         <activity
             android:name=".PerfilUsuarioActivity"
             android:exported="false"
@@ -36,19 +36,9 @@
             android:label="EditarProductoActivity"
             android:theme="@style/Theme.FloraliaMobileApp" />
         <activity
-            android:name=".DetalleCorteActivity"
-            android:exported="false"
-            android:label="DetalleCorteActivity"
-            android:theme="@style/Theme.FloraliaMobileApp" />
-        <activity
             android:name=".CortesDeCajaActivity"
             android:exported="false"
             android:label="CortesDeCajaActivity"
-            android:theme="@style/Theme.FloraliaMobileApp" />
-        <activity
-            android:name=".DetallesPedidoActivity"
-            android:exported="false"
-            android:label="DetallesPedidoActivity"
             android:theme="@style/Theme.FloraliaMobileApp" />
         <activity
             android:name=".InfoAppActivity"
@@ -61,44 +51,15 @@
             android:label="@string/title_activity_historial_pedidos"
             android:theme="@style/Theme.FloraliaMobileApp" />
         <activity
-            android:name=".MenuRepartidorActivity"
-            android:exported="false"
-            android:label="@string/title_activity_menu_repartidor"
-            android:theme="@style/Theme.FloraliaMobileApp" />
-        <activity
-            android:name=".Usuario"
-            android:exported="false"
-            android:label="@string/title_activity_usuario"
-            android:theme="@style/Theme.FloraliaMobileApp"
-            tools:ignore="Instantiatable" />
-        <activity
             android:name=".EditarUsuarioActivity"
             android:exported="false"
             android:label="@string/title_activity_editar_usuario"
             android:theme="@style/Theme.FloraliaMobileApp" />
         <activity
-            android:name=".UsuarioAdapter"
-            android:exported="false"
-            android:label="@string/title_activity_usuario_adapter"
-            android:theme="@style/Theme.FloraliaMobileApp"
-            tools:ignore="Instantiatable" />
-        <activity
             android:name=".GestionUsuariosActivity"
             android:exported="false"
             android:label="@string/title_activity_registro_roles"
             android:theme="@style/Theme.FloraliaMobileApp" />
-        <activity
-            android:name=".ProductoAdapter"
-            android:exported="false"
-            android:label="@string/title_activity_producto_adapter"
-            android:theme="@style/Theme.FloraliaMobileApp"
-            tools:ignore="Instantiatable" />
-        <activity
-            android:name=".Producto"
-            android:exported="false"
-            android:label="@string/title_activity_producto"
-            android:theme="@style/Theme.FloraliaMobileApp"
-            tools:ignore="Instantiatable" />
         <activity
             android:name=".InventarioActivity"
             android:exported="false"

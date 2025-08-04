@@ -1,96 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     android:background="@color/white"
     card_view:cardCornerRadius="12dp"
-    card_view:cardElevation="4dp">
+    card_view:cardElevation="4dp"
+    card_view:cardUseCompatPadding="true"
+    android:foreground="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="9dp">
+        android:padding="12dp">
 
         <TextView
             android:id="@+id/textUidPedido"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="0dp"
-            android:layout_marginBottom="4dp"
-            android:text="UID:"
+            android:ellipsize="end"
+            android:fontFamily="@font/albert_sans"
+            android:maxLines="1"
+            android:text="UID: #ABC123DEF456"
             android:textColor="@color/black"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textSize="16sp"
+            android:textStyle="bold"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintHorizontal_bias="0"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent"
+            tools:text="UID: asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdf" />
 
         <TextView
             android:id="@+id/textFecha"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/textUidPedido"
-            android:layout_alignStart="@id/textUidPedido"
-            android:layout_marginTop="6dp"
-            android:text="Fecha:"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/albert_sans"
+            android:text="Fecha: 01/08/2025"
             android:textColor="#555555"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toBottomOf="@id/textUidPedido"
+            card_view:layout_constraintEnd_toStartOf="@id/imageViewDescargarPdf"
+            card_view:layout_constraintHorizontal_bias="0"
+            tools:text="Fecha: 01/08/2025 14:30" />
 
         <TextView
             android:id="@+id/textCliente"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/textFecha"
-            android:layout_alignStart="@id/textFecha"
             android:layout_marginTop="4dp"
-            android:text="Cliente:"
+            android:fontFamily="@font/albert_sans"
+            android:text="Cliente: Juan Pérez"
             android:textColor="#555555"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toBottomOf="@id/textFecha"
+            card_view:layout_constraintEnd_toStartOf="@+id/imageViewDescargarPdf"
+            card_view:layout_constraintHorizontal_bias="0"
+            tools:text="Cliente: Juan Pérez (Calle Falsa 123, Colonia Inventada)" />
 
         <TextView
             android:id="@+id/textMetodo"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/textCliente"
-            android:layout_alignStart="@id/textCliente"
             android:layout_marginTop="4dp"
-            android:text="Pago:"
+            android:fontFamily="@font/albert_sans"
+            android:text="Pago: Tarjeta de Crédito"
             android:textColor="#555555"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toBottomOf="@id/textCliente"
+            card_view:layout_constraintEnd_toStartOf="@+id/imageViewDescargarPdf"
+            card_view:layout_constraintHorizontal_bias="0"
+            tools:text="Pago: Tarjeta de Crédito (VISA - **** 1234)" />
 
         <TextView
             android:id="@+id/textEstado"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/textMetodo"
-            android:layout_alignStart="@id/textMetodo"
             android:layout_marginTop="4dp"
-            android:text="Estado:"
+            android:fontFamily="@font/albert_sans"
+            android:text="Estado: Entregado"
             android:textColor="#555555"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toBottomOf="@id/textMetodo"
+            card_view:layout_constraintEnd_toStartOf="@+id/imageViewDescargarPdf"
+            card_view:layout_constraintHorizontal_bias="0"
+            tools:text="Estado: Entregado" />
 
         <TextView
             android:id="@+id/textTotal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/textFecha"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="8dp"
-            android:text="$000.00"
+            android:layout_marginTop="8dp" android:fontFamily="@font/albert_sans"
+            android:text="$1250.75"
             android:textColor="#27AE60"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textSize="16sp"
+            android:textStyle="bold"
+            card_view:layout_constraintStart_toStartOf="parent" card_view:layout_constraintTop_toBottomOf="@id/textEstado" tools:text="$1250.75" />
 
         <ImageView
             android:id="@+id/imageViewDescargarPdf"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_below="@id/textTotal"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="4dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="8dp"
+            android:clickable="true"
+            android:focusable="true"
             android:contentDescription="Descargar PDF"
-            android:src="@drawable/ic_download" />
+            android:src="@drawable/ic_download"
+            card_view:tint="#555555"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintBottom_toBottomOf="parent" card_view:layout_constraintTop_toBottomOf="@id/textFecha" card_view:layout_constraintVertical_bias="1.0" android:background="?attr/selectableItemBackgroundBorderless" />
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

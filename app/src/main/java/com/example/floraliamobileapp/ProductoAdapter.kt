@@ -13,7 +13,8 @@ import java.util.*
 
 class ProductoAdapter(
     private val productos: List<Producto>,
-    private val onEditarClick: (Producto) -> Unit
+    private val userRole: String?, // <- NUEVO: Se pasa el rol del usuario aquí
+    private val onEditarClick: (Producto) -> Unit // Este listener ahora solo se ejecutará si se permite
 ) : RecyclerView.Adapter<ProductoAdapter.ProductoViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductoViewHolder {
@@ -22,7 +23,8 @@ class ProductoAdapter(
     }
 
     override fun onBindViewHolder(holder: ProductoViewHolder, position: Int) {
-        holder.bind(productos[position], onEditarClick)
+        // Pasar el rol y el listener a la función bind del ViewHolder
+        holder.bind(productos[position], userRole, onEditarClick) // <- MODIFICADO
     }
 
     override fun getItemCount(): Int = productos.size
@@ -33,7 +35,7 @@ class ProductoAdapter(
         private val cantidad: TextView = itemView.findViewById(R.id.textViewCantidad)
         private val precio: TextView = itemView.findViewById(R.id.textViewPrecio)
 
-        fun bind(producto: Producto, onEditarClick: (Producto) -> Unit) {
+        fun bind(producto: Producto, userRole: String?, onEditarClick: (Producto) -> Unit) { // <- MODIFICADO
             nombre.text = producto.nombre
             cantidad.text = "Cantidad: ${producto.cantidad}"
 
@@ -50,9 +52,17 @@ class ProductoAdapter(
                 imagen.setImageResource(R.drawable.logo_floralia) // Fallback si falla
             }
 
-            // 👉 Click para editar
-            itemView.setOnClickListener {
-                onEditarClick(producto)
+            // 👉 Click para editar - CONDICIONAL SEGÚN EL ROL
+            if (userRole == "Administrador") { // <- NUEVO: Solo si es administrador
+                itemView.setOnClickListener {
+                    onEditarClick(producto)
+                }
+                itemView.isClickable = true // Asegurarse de que sea clicable
+                itemView.isFocusable = true
+            } else {
+                itemView.setOnClickListener(null) // <- NUEVO: Eliminar el listener si no es admin
+                itemView.isClickable = false // <- NUEVO: Hacer que no sea clicable
+                itemView.isFocusable = false
             }
         }
     }

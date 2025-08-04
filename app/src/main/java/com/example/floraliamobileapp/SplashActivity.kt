@@ -27,9 +27,9 @@ class SplashActivity : AppCompatActivity() {
 
         // Animaciones del logo y texto
         val logo = findViewById<ImageView>(R.id.logoImage)
-        val text = findViewById<TextView>(R.id.textView)
+        val text = findViewById<TextView>(R.id.appTitleTextView)
 
-        val logoAnim = AnimationUtils.loadAnimation(this, R.anim.logo_anim)
+        val logoAnim = AnimationUtils.loadAnimation(this, R.anim.text_anim)
         val textAnim = AnimationUtils.loadAnimation(this, R.anim.text_anim)
 
         logo.startAnimation(logoAnim)

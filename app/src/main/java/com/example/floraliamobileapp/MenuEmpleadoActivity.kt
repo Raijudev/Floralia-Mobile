@@ -39,7 +39,7 @@ class MenuEmpleadoActivity : AppCompatActivity() {
                         val rol = document.getString("rol") ?: ""
 
                         // Mostrar mensaje personalizado
-                        tvBienvenida.text = "Hola, $nombre $apellido!"
+                        tvBienvenida.text = "Bienvenido, $nombre $apellido!"
 
                         // Asignar imagen de perfil según el rol
                         when (rol.lowercase()) {
@@ -89,7 +89,7 @@ class MenuEmpleadoActivity : AppCompatActivity() {
         }
 
         // --- Cerrar sesión con confirmación ---
-        findViewById<ImageView>(R.id.CerrarSesion).setOnClickListener {
+        findViewById<TextView>(R.id.tvCerrarSesion).setOnClickListener {
             // Crea un AlertDialog para confirmar el cierre de sesión
             android.app.AlertDialog.Builder(this)
                 .setTitle("Cerrar Sesión")

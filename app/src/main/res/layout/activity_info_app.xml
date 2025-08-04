@@ -9,88 +9,79 @@
     android:fitsSystemWindows="true"
     tools:context=".InfoAppActivity">
 
-    <!-- CONTENIDO PRINCIPAL -->
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:background="@color/white">
 
-        <!-- Header -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/headerLayout"
             android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:background="@color/white"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/pink_enviaflores"
             android:elevation="4dp"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp">
-
-            <ImageView
-                android:id="@+id/btnBack"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:clickable="true"
-                android:contentDescription="Volver"
-                android:focusable="true"
-                android:src="@drawable/volver"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/tvTitulo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:fontFamily="@font/open_sans"
-                android:text="Información de la Aplicación"
-                android:textColor="@color/black"
-                android:textSize="18sp"
+                android:fontFamily="@font/albert_sans"
+                android:text="información de la aplicación"
+                android:textColor="@color/white"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/imageViewMenu"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toEndOf="@id/btnBack"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/imageViewMenu"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="16dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:contentDescription="Abrir menú"
                 android:focusable="true"
                 android:src="@drawable/logo_floralia"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/white" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!-- Contenido scrollable centrado -->
         <ScrollView
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_weight="1"
             android:fillViewport="true"
-            android:padding="16dp">
+            app:layout_constraintTop_toBottomOf="@id/headerLayout"
+            app:layout_constraintBottom_toTopOf="@id/backButtonContainer"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp">
 
             <LinearLayout
                 android:id="@+id/layoutContenido"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:orientation="vertical"
-                android:layout_marginBottom="50dp">
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/tvNombreApp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/open_sans"
-                    android:text="Floralia Mobile"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
+                    android:fontFamily="@font/albert_sans"
+                    android:text="floralia mobile"
+                    android:textColor="@color/pink_enviaflores"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <ImageView
@@ -98,6 +89,7 @@
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:layout_marginTop="12dp"
+                    app:tint="@color/pink_enviaflores"
                     android:contentDescription="Logo Floralia"
                     android:src="@drawable/logo_floralia" />
 
@@ -106,8 +98,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:fontFamily="@font/open_sans"
-                    android:text="Versión 1.2"
+                    android:fontFamily="@font/albert_sans"
+                    android:text="Versión 1.3"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
@@ -116,9 +108,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:fontFamily="@font/open_sans"
+                    android:fontFamily="@font/albert_sans"
                     android:gravity="center"
-                    android:text="2023 - 2025 Horizons"
+                    android:text="2025 Floralia"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
@@ -127,16 +119,42 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:fontFamily="@font/open_sans"
+                    android:fontFamily="@font/albert_sans"
                     android:text="Términos de Uso"
-                    android:textColor="@android:color/holo_blue_dark"
+                    android:textColor="@android:color/holo_purple"
                     android:textSize="14sp"
                     android:textStyle="bold" />
             </LinearLayout>
         </ScrollView>
-    </LinearLayout>
 
-    <!-- MENÚ LATERAL -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/backButtonContainer"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@color/white"
+            android:elevation="4dp">
+
+            <ImageView
+                android:id="@+id/btnBack"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="16dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="Volver"
+                android:focusable="true"
+                android:src="@drawable/volver"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/pink_enviaflores" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <LinearLayout
         android:id="@+id/navigationDrawer"
         android:layout_width="300dp"
@@ -149,22 +167,21 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="24dp"
-            android:layout_marginBottom="12dp">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp">
 
             <TextView
                 android:id="@+id/textViewMenuTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:fontFamily="@font/open_sans"
-                android:text="Floralia Mobile"
-                android:textColor="@color/black"
-                android:textSize="18sp"
+                android:fontFamily="@font/albert_sans"
+                android:text="floralia mobile"
+                android:textColor="@color/pink_enviaflores"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/imageViewMenuLogo"
-                app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -176,9 +193,11 @@
                 android:focusable="true"
                 android:contentDescription="Logo Floralia"
                 android:src="@drawable/logo_floralia"
+                app:tint="@color/pink_enviaflores"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:background="?attr/selectableItemBackgroundBorderless" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View
@@ -189,8 +208,11 @@
 
         <TextView
             android:id="@+id/menuAgregarUsuario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:textSize="16sp"
-            style="@style/DrawerMenuItem"
+            android:fontFamily="@font/albert_sans"
+            android:textColor="@color/pink_enviaflores"
             android:text="Agregar Usuario"
             android:background="?android:attr/selectableItemBackground"
             android:clickable="true"
@@ -199,8 +221,11 @@
 
         <TextView
             android:id="@+id/menuProductos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:textSize="16sp"
-            style="@style/DrawerMenuItem"
+            android:fontFamily="@font/albert_sans"
+            android:textColor="@color/pink_enviaflores"
             android:text="Productos"
             android:background="?android:attr/selectableItemBackground"
             android:clickable="true"
@@ -208,19 +233,12 @@
             android:padding="12dp" />
 
         <TextView
-            android:id="@+id/menuAgregarProducto"
-            android:textSize="16sp"
-            style="@style/DrawerMenuItem"
-            android:text="Agregar Producto"
-            android:background="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
-            android:padding="12dp" />
-
-        <TextView
             android:id="@+id/menuPedidos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:textSize="16sp"
-            style="@style/DrawerMenuItem"
+            android:fontFamily="@font/albert_sans"
+            android:textColor="@color/pink_enviaflores"
             android:text="Pedidos"
             android:background="?android:attr/selectableItemBackground"
             android:clickable="true"
@@ -229,8 +247,11 @@
 
         <TextView
             android:id="@+id/menuUsuarios"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:textSize="16sp"
-            style="@style/DrawerMenuItem"
+            android:fontFamily="@font/albert_sans"
+            android:textColor="@color/pink_enviaflores"
             android:text="Usuarios"
             android:background="?android:attr/selectableItemBackground"
             android:clickable="true"
@@ -239,8 +260,11 @@
 
         <TextView
             android:id="@+id/menuCortesdeCaja"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:textSize="16sp"
-            style="@style/DrawerMenuItem"
+            android:fontFamily="@font/albert_sans"
+            android:textColor="@color/pink_enviaflores"
             android:text="Cortes de Caja"
             android:background="?android:attr/selectableItemBackground"
             android:clickable="true"
@@ -249,8 +273,11 @@
 
         <TextView
             android:id="@+id/menuInfoApp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:textSize="16sp"
-            style="@style/DrawerMenuItem"
+            android:fontFamily="@font/albert_sans"
+            android:textColor="@color/pink_enviaflores"
             android:text="Info. de la Aplicación"
             android:background="?android:attr/selectableItemBackground"
             android:clickable="true"

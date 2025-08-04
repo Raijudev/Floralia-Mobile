@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "FloraliaMobileApp"
+rootProject.name = "Floralia Mobile (1.3)"
 include(":app")

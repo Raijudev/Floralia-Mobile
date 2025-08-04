@@ -7,6 +7,7 @@ import android.app.ProgressDialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -33,11 +34,13 @@ class AgregarUsuarioActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
 
+        imageViewBack = findViewById(R.id.imageViewBack)
+        imageViewBack.setOnClickListener { finish() }
+
+        // --- Inicio del fragmento de código del menú lateral ---
         val drawerLayout = findViewById<DrawerLayout>(R.id.drawerLayout)
         val imageViewMenu = findViewById<ImageView>(R.id.imageViewMenu)
-        imageViewBack = findViewById(R.id.imageViewBack)
         val imageViewLogoMenu = findViewById<ImageView>(R.id.imageViewMenuLogo)
-        imageViewBack.setOnClickListener { finish() }
 
         val closeDrawer = {
             if (drawerLayout.isDrawerOpen(GravityCompat.END)) {
@@ -53,13 +56,68 @@ class AgregarUsuarioActivity : AppCompatActivity() {
         // Opciones del menú lateral
         val menuAgregarUsuario = findViewById<TextView>(R.id.menuAgregarUsuario)
         val menuProductos = findViewById<TextView>(R.id.menuProductos)
-        val menuAgregarProducto = findViewById<TextView>(R.id.menuAgregarProducto)
         val menuPedidos = findViewById<TextView>(R.id.menuPedidos)
         val menuUsuarios = findViewById<TextView>(R.id.menuUsuarios)
         val menuCortesdeCaja = findViewById<TextView>(R.id.menuCortesdeCaja)
         val menuInfoApp = findViewById<TextView>(R.id.menuInfoApp)
 
         imageViewLogoMenu.setOnClickListener { closeDrawer() }
+
+        // --- Lógica de validación de rol para el menú ---
+        val currentUserUid = FirebaseAuth.getInstance().currentUser?.uid
+
+        if (currentUserUid != null) {
+            val db = FirebaseFirestore.getInstance()
+            db.collection("usuarios").document(currentUserUid)
+                .get()
+                .addOnSuccessListener { document ->
+                    if (document != null) {
+                        val rol = document.getString("rol")
+                        if (rol == "Administrador") {
+                            menuUsuarios.visibility = View.VISIBLE
+                        } else if (rol == "Empleado") {
+                            menuUsuarios.visibility = View.GONE
+                        }
+                    } else {
+                        // Documento del usuario no existe, ocultar por seguridad
+                        menuUsuarios.visibility = View.GONE
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    // Error al obtener el rol, ocultar por seguridad
+                    println("Error al obtener el rol del usuario: $exception")
+                    menuUsuarios.visibility = View.GONE
+                }
+        } else {
+            // No hay usuario logeado, ocultar por seguridad
+            menuUsuarios.visibility = View.GONE
+        }
+        // --- Fin de la lógica de validación de rol ---
+
+        // --- Resaltar la opción del menú actual (NUEVO CÓDIGO) ---
+        // Primero, restablece todos los colores a su estado normal
+        val defaultColor = resources.getColor(R.color.black, theme) // O el color por defecto de tu texto
+        menuAgregarUsuario.setTextColor(defaultColor)
+        menuProductos.setTextColor(defaultColor)
+        // Agrega aquí todas las opciones de menú que tengas
+        menuPedidos.setTextColor(defaultColor)
+        menuUsuarios.setTextColor(defaultColor)
+        menuCortesdeCaja.setTextColor(defaultColor)
+        menuInfoApp.setTextColor(defaultColor)
+
+        // Luego, aplica el color gris bajo a la opción de la actividad actual
+        val highlightColor = resources.getColor(R.color.gray_light, theme)
+
+        when (this) {
+            is AgregarUsuarioActivity -> menuAgregarUsuario.setTextColor(highlightColor)
+            is InventarioActivity -> menuProductos.setTextColor(highlightColor)
+            is HistorialPedidosActivity -> menuPedidos.setTextColor(highlightColor)
+            is GestionUsuariosActivity -> menuUsuarios.setTextColor(highlightColor)
+            is CortesDeCajaActivity -> menuCortesdeCaja.setTextColor(highlightColor)
+            is InfoAppActivity -> menuInfoApp.setTextColor(highlightColor)
+            // Agrega más casos para cada una de tus actividades de menú
+        }
+        // --- Fin de la lógica de resaltado ---
 
         menuAgregarUsuario.setOnClickListener {
             drawerLayout.closeDrawer(GravityCompat.END)
@@ -69,12 +127,6 @@ class AgregarUsuarioActivity : AppCompatActivity() {
         menuProductos.setOnClickListener {
             drawerLayout.closeDrawer(GravityCompat.END)
             startActivity(Intent(this, InventarioActivity::class.java))
-            finish()
-        }
-
-        menuAgregarProducto.setOnClickListener {
-            drawerLayout.closeDrawer(GravityCompat.END)
-            startActivity(Intent(this, AgregarProductoActivity::class.java))
             finish()
         }
 
@@ -101,6 +153,7 @@ class AgregarUsuarioActivity : AppCompatActivity() {
             startActivity(Intent(this, InfoAppActivity::class.java))
             finish()
         }
+        // --- Fin del fragmento de código del menú lateral ---
 
         progressDialog = ProgressDialog(this)
         progressDialog.setMessage("Agregando Usuario...")
