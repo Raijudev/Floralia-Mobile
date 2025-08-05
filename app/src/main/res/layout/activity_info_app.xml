@@ -121,9 +121,10 @@
                     android:layout_marginTop="12dp"
                     android:fontFamily="@font/albert_sans"
                     android:text="Términos de Uso"
-                    android:textColor="@android:color/holo_purple"
+                    android:textColor="@color/pink_enviaflores"
                     android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:background="?attr/selectableItemBackground" />
             </LinearLayout>
         </ScrollView>
 

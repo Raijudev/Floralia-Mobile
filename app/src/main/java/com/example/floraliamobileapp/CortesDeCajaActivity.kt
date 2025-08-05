@@ -503,7 +503,7 @@ class CortesDeCajaActivity : AppCompatActivity() {
 
     private fun addHeaderAndLogo(document: Document) {
         try {
-            val d: Drawable? = ContextCompat.getDrawable(this, R.drawable.logo_floralia)
+            val d: Drawable? = ContextCompat.getDrawable(this, R.drawable.logo_floralia1)
             if (d != null) {
                 val bitmap: Bitmap = if (d is BitmapDrawable) {
                     d.bitmap

@@ -13,8 +13,8 @@ import java.util.*
 
 class ProductoAdapter(
     private val productos: List<Producto>,
-    private val userRole: String?, // <- NUEVO: Se pasa el rol del usuario aquí
-    private val onEditarClick: (Producto) -> Unit // Este listener ahora solo se ejecutará si se permite
+    private val userRole: String?,
+    private val onEditarClick: (Producto) -> Unit
 ) : RecyclerView.Adapter<ProductoAdapter.ProductoViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductoViewHolder {
@@ -23,19 +23,22 @@ class ProductoAdapter(
     }
 
     override fun onBindViewHolder(holder: ProductoViewHolder, position: Int) {
-        // Pasar el rol y el listener a la función bind del ViewHolder
-        holder.bind(productos[position], userRole, onEditarClick) // <- MODIFICADO
+        holder.bind(productos[position], userRole, onEditarClick)
     }
 
     override fun getItemCount(): Int = productos.size
 
     class ProductoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val imagen: ImageView = itemView.findViewById(R.id.imageViewProducto)
+        private val uidTextView: TextView = itemView.findViewById(R.id.textViewUid) // <- NUEVO
         private val nombre: TextView = itemView.findViewById(R.id.textViewNombre)
         private val cantidad: TextView = itemView.findViewById(R.id.textViewCantidad)
         private val precio: TextView = itemView.findViewById(R.id.textViewPrecio)
 
-        fun bind(producto: Producto, userRole: String?, onEditarClick: (Producto) -> Unit) { // <- MODIFICADO
+        fun bind(producto: Producto, userRole: String?, onEditarClick: (Producto) -> Unit) {
+            // Asignar el UID al TextView correspondiente
+            uidTextView.text = "${producto.uid}" // <- NUEVO
+
             nombre.text = producto.nombre
             cantidad.text = "Cantidad: ${producto.cantidad}"
 
@@ -53,15 +56,15 @@ class ProductoAdapter(
             }
 
             // 👉 Click para editar - CONDICIONAL SEGÚN EL ROL
-            if (userRole == "Administrador") { // <- NUEVO: Solo si es administrador
+            if (userRole == "Administrador") {
                 itemView.setOnClickListener {
                     onEditarClick(producto)
                 }
-                itemView.isClickable = true // Asegurarse de que sea clicable
+                itemView.isClickable = true
                 itemView.isFocusable = true
             } else {
-                itemView.setOnClickListener(null) // <- NUEVO: Eliminar el listener si no es admin
-                itemView.isClickable = false // <- NUEVO: Hacer que no sea clicable
+                itemView.setOnClickListener(null)
+                itemView.isClickable = false
                 itemView.isFocusable = false
             }
         }

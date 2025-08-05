@@ -467,7 +467,7 @@ class HistorialPedidosActivity : AppCompatActivity() {
                 }
 
                 // --- Logo Floralia: Solo dibujar en la primera página ---
-                val logoBitmap = BitmapFactory.decodeResource(resources, R.drawable.logo_floralia)
+                val logoBitmap = BitmapFactory.decodeResource(resources, R.drawable.logo_floralia1)
                 val logoHeight = 70 // Ajustado, no tan pequeño
                 val aspectRatio = logoBitmap.width.toFloat() / logoBitmap.height.toFloat()
                 val logoWidth = (logoHeight * aspectRatio).toInt()
