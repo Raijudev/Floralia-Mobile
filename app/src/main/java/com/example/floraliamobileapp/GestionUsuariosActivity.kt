@@ -76,12 +76,10 @@ class GestionUsuariosActivity : AppCompatActivity() {
             }
         }
 
-        // Abrir menú lateral al dar clic en el ImageView del logo
         imageViewMenu.setOnClickListener {
             drawerLayout.openDrawer(GravityCompat.END)
         }
 
-        // Opciones del menú lateral
         val menuAgregarUsuario = findViewById<TextView>(R.id.menuAgregarUsuario)
         val menuProductos = findViewById<TextView>(R.id.menuProductos)
         val menuPedidos = findViewById<TextView>(R.id.menuPedidos)
@@ -91,7 +89,6 @@ class GestionUsuariosActivity : AppCompatActivity() {
 
         imageViewLogoMenu.setOnClickListener { closeDrawer() }
 
-        // --- Lógica de validación de rol para el menú ---
         val currentUserUid = FirebaseAuth.getInstance().currentUser?.uid
 
         if (currentUserUid != null) {
@@ -107,45 +104,35 @@ class GestionUsuariosActivity : AppCompatActivity() {
                             menuUsuarios.visibility = View.GONE
                         }
                     } else {
-                        // Documento del usuario no existe, ocultar por seguridad
                         menuUsuarios.visibility = View.GONE
                     }
                 }
                 .addOnFailureListener { exception ->
-                    // Error al obtener el rol, ocultar por seguridad
-                    println("Error al obtener el rol del usuario: $exception")
+                    println("Error al obtener el rol del usuario: $exception.")
                     menuUsuarios.visibility = View.GONE
                 }
         } else {
-            // No hay usuario logeado, ocultar por seguridad
             menuUsuarios.visibility = View.GONE
         }
-        // --- Fin de la lógica de validación de rol ---
 
-        // --- Resaltar la opción del menú actual (NUEVO CÓDIGO) ---
-        // Primero, restablece todos los colores a su estado normal
-        val defaultColor = resources.getColor(R.color.black, theme) // O el color por defecto de tu texto
+        val defaultColor = resources.getColor(R.color.black, theme)
         menuAgregarUsuario.setTextColor(defaultColor)
         menuProductos.setTextColor(defaultColor)
-        // Agrega aquí todas las opciones de menú que tengas
         menuPedidos.setTextColor(defaultColor)
         menuUsuarios.setTextColor(defaultColor)
         menuCortesdeCaja.setTextColor(defaultColor)
         menuInfoApp.setTextColor(defaultColor)
 
-        // Luego, aplica el color gris bajo a la opción de la actividad actual
         val highlightColor = resources.getColor(R.color.gray_light, theme)
 
         when (this) {
             is AgregarUsuarioActivity -> menuAgregarUsuario.setTextColor(highlightColor)
-            is InventarioActivity -> menuProductos.setTextColor(highlightColor) // Asumiendo que InventarioActivity es "Productos"
+            is InventarioActivity -> menuProductos.setTextColor(highlightColor)
             is HistorialPedidosActivity -> menuPedidos.setTextColor(highlightColor)
             is GestionUsuariosActivity -> menuUsuarios.setTextColor(highlightColor)
             is CortesDeCajaActivity -> menuCortesdeCaja.setTextColor(highlightColor)
             is InfoAppActivity -> menuInfoApp.setTextColor(highlightColor)
-            // Agrega más casos para cada una de tus actividades de menú
         }
-        // --- Fin de la lógica de resaltado ---
 
         menuAgregarUsuario.setOnClickListener {
             drawerLayout.closeDrawer(GravityCompat.END)
@@ -166,7 +153,6 @@ class GestionUsuariosActivity : AppCompatActivity() {
 
         menuUsuarios.setOnClickListener {
             drawerLayout.closeDrawer(GravityCompat.END)
-            // Ya estás en esta pantalla, solo cierra el menú
         }
 
         menuCortesdeCaja.setOnClickListener {
@@ -180,7 +166,6 @@ class GestionUsuariosActivity : AppCompatActivity() {
             startActivity(Intent(this, InfoAppActivity::class.java))
             finish()
         }
-        // --- Fin del fragmento de código del menú lateral ---
 
         editTextBuscarUsuario.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -199,8 +184,7 @@ class GestionUsuariosActivity : AppCompatActivity() {
             .addOnSuccessListener { documentos ->
                 listaUsuarios.clear()
                 for (doc in documentos) {
-                    val usuario = doc.toObject(Usuario::class.java)
-                    usuario.uid = doc.id
+                    val usuario = doc.toObject(Usuario::class.java).copy(uid = doc.id)
                     listaUsuarios.add(usuario)
                 }
 
@@ -226,7 +210,7 @@ class GestionUsuariosActivity : AppCompatActivity() {
                     val nombreCompleto = "${it.nombre} ${it.apellido}".lowercase()
 
                     nombreCompleto.contains(filtro) ||
-                            it.uid.lowercase().contains(filtro) ||
+                            it.uid?.lowercase()?.contains(filtro) ?: false ||
                             it.nombre.lowercase().contains(filtro) ||
                             it.apellido.lowercase().contains(filtro) ||
                             it.telefono.lowercase().contains(filtro) ||

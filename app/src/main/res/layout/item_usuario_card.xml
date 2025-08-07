@@ -31,36 +31,20 @@
             tools:src="@drawable/administrador" />
 
         <TextView
-            android:id="@+id/textViewUid"
+            android:id="@+id/textViewNombreUsuario"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:ellipsize="end"
             android:fontFamily="@font/albert_sans"
             android:maxLines="1"
-            android:text="UID: "
+            android:text="Usuario Prueba"
             android:textColor="@color/black"
             android:textSize="14sp"
             android:textStyle="bold"
             card_view:layout_constraintEnd_toEndOf="parent"
             card_view:layout_constraintStart_toEndOf="@id/imageViewRol"
             card_view:layout_constraintTop_toTopOf="@id/imageViewRol"
-            tools:text="UID: 1aB2c3d4E5f6G7h8" />
-
-        <TextView
-            android:id="@+id/textViewNombreUsuario"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="2dp"
-            android:ellipsize="end"
-            android:fontFamily="@font/albert_sans"
-            android:maxLines="1"
-            android:text="Usuario Prueba"
-            android:textColor="@color/gray_light_text"
-            android:textSize="14sp"
-            card_view:layout_constraintEnd_toEndOf="parent"
-            card_view:layout_constraintStart_toEndOf="@id/imageViewRol"
-            card_view:layout_constraintTop_toBottomOf="@id/textViewUid"
             tools:text="Usuario de Ejemplo Muy Largo para Ver Ellipsize" />
 
         <TextView

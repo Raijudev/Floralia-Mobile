@@ -43,7 +43,7 @@ class PedidoAdapter(
         private val estado: TextView = itemView.findViewById(R.id.textEstado)
 
         fun bind(pedido: Pedido) {
-            uidPedido.text = "UID: ${pedido.uid}"
+            uidPedido.text = "Núm. de Pedido: ${pedido.uid}"
 
             val sdf = SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault())
             pedido.fechaHoraCreacion?.let {
@@ -53,10 +53,10 @@ class PedidoAdapter(
             cliente.text = "Cliente: ${pedido.cliente}"
 
             val formatoMoneda = NumberFormat.getCurrencyInstance(Locale("es", "MX"))
-            total.text = "Total: ${formatoMoneda.format(pedido.totalFinal)} MXN"
+            total.text = "${formatoMoneda.format(pedido.totalFinal)} MXN"
 
-            metodo.text = "Pago: ${pedido.metodoPago}"
-            estado.text = "Estado: ${pedido.estadoPedido}"
+            metodo.text = "Método de Pago: ${pedido.metodoPago}"
+            estado.text = "Estado del Pedido: ${pedido.estadoPedido}"
         }
     }
 }

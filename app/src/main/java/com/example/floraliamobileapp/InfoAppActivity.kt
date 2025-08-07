@@ -66,18 +66,22 @@ class InfoAppActivity : AppCompatActivity() {
                         val rol = document.getString("rol")
                         if (rol == "Administrador") {
                             menuUsuarios.visibility = View.VISIBLE
+                            menuAgregarUsuario.visibility = View.VISIBLE
                         } else if (rol == "Empleado") {
                             menuUsuarios.visibility = View.GONE
+                            menuAgregarUsuario.visibility = View.GONE
                         }
                     } else {
                         // Documento del usuario no existe, ocultar por seguridad
                         menuUsuarios.visibility = View.GONE
+                        menuAgregarUsuario.visibility = View.GONE
                     }
                 }
                 .addOnFailureListener { exception ->
                     // Error al obtener el rol, ocultar por seguridad
-                    println("Error al obtener el rol del usuario: $exception")
+                    println("Error al obtener el rol del usuario: $exception.")
                     menuUsuarios.visibility = View.GONE
+                    menuAgregarUsuario.visibility = View.GONE
                 }
         } else {
             // No hay usuario logeado, ocultar por seguridad
@@ -179,6 +183,7 @@ class InfoAppActivity : AppCompatActivity() {
         • Los términos pueden cambiar en cualquier momento. Usar la app implica aceptar los cambios.
 
         • ¿Dudas? Contacta al administrador o al correo oficial de Floralia.
+        floraliamobilesupport@gmail.com
 """.trimIndent()
 
         // Inflar el layout personalizado

@@ -16,7 +16,6 @@ class CorteCajaAdapter(
 ) : RecyclerView.Adapter<CorteCajaAdapter.CorteViewHolder>() {
 
     class CorteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val txtuid: TextView = itemView.findViewById(R.id.txtUidCorte)
         val txtFecha: TextView = itemView.findViewById(R.id.txtFechas)
         val txtGenerado: TextView = itemView.findViewById(R.id.txtGeneradoPor)
         val txtPedidos: TextView = itemView.findViewById(R.id.txtTotalPedidos)
@@ -35,11 +34,10 @@ class CorteCajaAdapter(
         val corte = listaCortes[position]
         val formato = SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault())
 
-        holder.txtuid.text = "UID: ${corte.uid}"
         holder.txtFecha.text = "De ${formato.format(corte.fechaInicial?.toDate())} a ${formato.format(corte.fechaFinal?.toDate())}"
-        holder.txtGenerado.text = "Generado por: ${corte.generadoPor}"
-        holder.txtPedidos.text = "Pedidos: ${corte.totalPedidos}"
-        holder.txtVentas.text = "Ventas: $${String.format("%.2f", corte.totalVentas)} MXN"
+        holder.txtGenerado.text = "Generado Por: ${corte.generadoPor}"
+        holder.txtPedidos.text = "Total de Pedidos: ${corte.totalPedidos}"
+        holder.txtVentas.text = "$${String.format("%.2f", corte.totalVentas)} MXN"
 
         // Nuevo listener para el icono de descarga
         holder.imgDownloadPdf.setOnClickListener {

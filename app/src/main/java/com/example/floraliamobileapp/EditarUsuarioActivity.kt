@@ -26,13 +26,21 @@ class EditarUsuarioActivity : AppCompatActivity() {
 
     private lateinit var progressDialog: ProgressDialog
 
+    // Handler y Runnable para implementar el "debounce"
+    private val validationHandler = android.os.Handler(android.os.Looper.getMainLooper())
+    private var validationRunnable: Runnable? = null
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_editar_usuario)
 
         db = FirebaseFirestore.getInstance()
-        uid = intent.getStringExtra("uid") ?: return finish()
+        uid = intent.getStringExtra("uid") ?: run {
+            Toast.makeText(this, "No se pudo cargar la información del usuario.", Toast.LENGTH_LONG).show()
+            finish()
+            return
+        }
 
         // Inicializar ProgressDialog
         progressDialog = ProgressDialog(this)
@@ -63,12 +71,10 @@ class EditarUsuarioActivity : AppCompatActivity() {
             }
         }
 
-        // Abrir menú lateral al dar clic en el ImageView del logo
         imageViewMenu.setOnClickListener {
             drawerLayout.openDrawer(GravityCompat.END)
         }
 
-        // Opciones del menú lateral
         val menuAgregarUsuario = findViewById<TextView>(R.id.menuAgregarUsuario)
         val menuProductos = findViewById<TextView>(R.id.menuProductos)
         val menuPedidos = findViewById<TextView>(R.id.menuPedidos)
@@ -78,7 +84,6 @@ class EditarUsuarioActivity : AppCompatActivity() {
 
         imageViewLogoMenu.setOnClickListener { closeDrawer() }
 
-        // --- Lógica de validación de rol para el menú ---
         val currentUserUid = FirebaseAuth.getInstance().currentUser?.uid
 
         if (currentUserUid != null) {
@@ -94,55 +99,41 @@ class EditarUsuarioActivity : AppCompatActivity() {
                             menuUsuarios.visibility = View.GONE
                         }
                     } else {
-                        // Documento del usuario no existe, ocultar por seguridad
                         menuUsuarios.visibility = View.GONE
                     }
                 }
                 .addOnFailureListener { exception ->
-                    // Error al obtener el rol, ocultar por seguridad
                     println("Error al obtener el rol del usuario: $exception")
                     menuUsuarios.visibility = View.GONE
                 }
         } else {
-            // No hay usuario logeado, ocultar por seguridad
             menuUsuarios.visibility = View.GONE
         }
-        // --- Fin de la lógica de validación de rol ---
 
-        // --- Resaltar la opción del menú actual (NUEVO CÓDIGO) ---
-        // Primero, restablece todos los colores a su estado normal
-        val defaultColor = resources.getColor(R.color.black, theme) // O el color por defecto de tu texto
+        val defaultColor = resources.getColor(R.color.black, theme)
         menuAgregarUsuario.setTextColor(defaultColor)
         menuProductos.setTextColor(defaultColor)
-        // Agrega aquí todas las opciones de menú que tengas
         menuPedidos.setTextColor(defaultColor)
         menuUsuarios.setTextColor(defaultColor)
         menuCortesdeCaja.setTextColor(defaultColor)
         menuInfoApp.setTextColor(defaultColor)
 
-        // Luego, aplica el color gris bajo a la opción de la actividad actual
         val highlightColor = resources.getColor(R.color.gray_light, theme)
 
         when (this) {
             is AgregarUsuarioActivity -> menuAgregarUsuario.setTextColor(highlightColor)
-            is InventarioActivity -> menuProductos.setTextColor(highlightColor) // Asumiendo que InventarioActivity es "Productos"
+            is InventarioActivity -> menuProductos.setTextColor(highlightColor)
             is HistorialPedidosActivity -> menuPedidos.setTextColor(highlightColor)
             is GestionUsuariosActivity -> menuUsuarios.setTextColor(highlightColor)
             is CortesDeCajaActivity -> menuCortesdeCaja.setTextColor(highlightColor)
             is InfoAppActivity -> menuInfoApp.setTextColor(highlightColor)
-            // Agrega más casos para cada una de tus actividades de menú
         }
-        // --- Fin de la lógica de resaltado ---
 
         menuAgregarUsuario.setOnClickListener {
             drawerLayout.closeDrawer(GravityCompat.END)
             val intent = Intent(this, AgregarUsuarioActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             startActivity(intent)
-            // No uses finish() aquí si quieres que la actividad actual (desde donde se abre el menú)
-            // permanezca en la pila si no es la misma que la que se va a iniciar.
-            // Solo usa finish() si la actividad actual NO debe permanecer si es diferente de la destino.
-            // Para un menú lateral, usualmente NO querrás hacer finish() aquí.
         }
 
         menuProductos.setOnClickListener {
@@ -182,10 +173,9 @@ class EditarUsuarioActivity : AppCompatActivity() {
 
         // --- Fin del fragmento de código del menú lateral ---
 
-        val roles = arrayOf("Administrador", "Empleado", "Cliente")
+        val roles = arrayOf("Administrador", "Empleado")
         spinnerRol.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, roles)
 
-        // Cargar datos usuario
         db.collection("usuarios").document(uid).get()
             .addOnSuccessListener { doc ->
                 if (doc.exists()) {
@@ -212,7 +202,14 @@ class EditarUsuarioActivity : AppCompatActivity() {
                     }
 
                     spinnerRol.setSelection(roles.indexOf(doc.getString("rol")))
+                } else {
+                    Toast.makeText(this, "El usuario no fue encontrado en la base de datos.", Toast.LENGTH_LONG).show()
+                    finish()
                 }
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Error al cargar la información del usuario: ${e.message}.", Toast.LENGTH_LONG).show()
+                finish()
             }
 
         val uidDelUsuarioActual = intent.getStringExtra("uid") ?: ""
@@ -222,8 +219,18 @@ class EditarUsuarioActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
             override fun afterTextChanged(s: Editable?) {
+                validationRunnable?.let { validationHandler.removeCallbacks(it) }
+
                 val tarjetaId = s.toString().trim()
-                if (tarjetaId.isNotEmpty()) {
+                if (tarjetaId.isEmpty()) {
+                    idTarjeta.error = null // Limpia el error cuando el campo está vacío
+                    puntos.setText("")
+                    fechaActivacion.setText("")
+                    fechaVencimiento.setText("")
+                    return
+                }
+
+                validationRunnable = Runnable {
                     db.collection("tarjetas_nfc")
                         .whereEqualTo("idTarjetaNFC", tarjetaId)
                         .get()
@@ -232,28 +239,27 @@ class EditarUsuarioActivity : AppCompatActivity() {
                                 val tarjetaDoc = querySnapshot.documents[0]
                                 val estado = tarjetaDoc.getString("estado") ?: "Desconocido"
                                 val asignadoAUid = tarjetaDoc.getString("asignadoAUid") ?: ""
-
                                 val esMismaPersona = asignadoAUid == uidDelUsuarioActual
 
                                 if ((estado == "Asignada" || estado == "Cancelada") && !esMismaPersona) {
-                                    Toast.makeText(
-                                        this@EditarUsuarioActivity,
-                                        if (estado == "Asignada")
-                                            "La tarjeta ya está asignada a otro usuario"
-                                        else
-                                            "Esta tarjeta ha sido cancelada y no puede usarse",
-                                        Toast.LENGTH_LONG
-                                    ).show()
+                                    idTarjeta.error = if (estado == "Asignada")
+                                        "La tarjeta ya está asignada a otro usuario."
+                                    else
+                                        "Esta tarjeta ha sido cancelada y no puede ser utilizada."
 
-                                    idTarjeta.post { idTarjeta.setText("") }
+                                    idTarjeta.postDelayed({
+                                        idTarjeta.setText("")
+                                        idTarjeta.error = null
+                                    }, 500)
+
                                     puntos.setText("")
                                     fechaActivacion.setText("")
                                     fechaVencimiento.setText("")
                                 } else {
+                                    idTarjeta.error = null // Limpia el error si la tarjeta es válida
                                     val puntosValue = tarjetaDoc.getLong("puntos") ?: 0
                                     val activacionTS = tarjetaDoc.getTimestamp("fechaActivacion")
                                     val vencimientoTS = tarjetaDoc.getTimestamp("fechaVencimiento")
-
                                     puntos.setText(puntosValue.toString())
                                     fechaActivacion.setText(
                                         activacionTS?.toDate()?.let { dateFormat.format(it) } ?: ""
@@ -263,51 +269,95 @@ class EditarUsuarioActivity : AppCompatActivity() {
                                     )
                                 }
                             } else {
+                                idTarjeta.error = "La tarjeta ingresada no existe." // Muestra el error
                                 puntos.setText("")
                                 fechaActivacion.setText("")
                                 fechaVencimiento.setText("")
                             }
                         }
-                        .addOnFailureListener {
-                            Toast.makeText(
-                                this@EditarUsuarioActivity,
-                                "Error al buscar tarjeta: ${it.message}",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                        .addOnFailureListener { e ->
+                            idTarjeta.error = "Error al verificar la tarjeta: ${e.message}."
                         }
-                } else {
-                    puntos.setText("")
-                    fechaActivacion.setText("")
-                    fechaVencimiento.setText("")
                 }
+                validationHandler.postDelayed(validationRunnable!!, 500)
             }
         })
 
         btnActualizar.text = "Actualizar"
         btnActualizar.setOnClickListener {
+            // Limpia los errores previos antes de validar
+            nombre.error = null
+            apellido.error = null
+            telefono.error = null
+            domicilio.error = null
+            puntos.error = null
+            fechaActivacion.error = null
+            fechaVencimiento.error = null
+
             val nombreStr = nombre.text.toString().trim()
             val apellidoStr = apellido.text.toString().trim()
+            val telefonoStr = telefono.text.toString().trim()
+            val domicilioStr = domicilio.text.toString().trim()
             val rolStr = spinnerRol.selectedItem.toString()
             val nuevaIdTarjeta = idTarjeta.text.toString().trim()
 
-            if (nombreStr.isEmpty() || apellidoStr.isEmpty()) {
-                Toast.makeText(this, "Complete los campos obligatorios", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
+            var isValid = true
+
+            // Validaciones de campos
+            if (nombreStr.isEmpty()) {
+                nombre.error = "Campo obligatorio"
+                isValid = false
+            }
+            if (apellidoStr.isEmpty()) {
+                apellido.error = "Campo obligatorio"
+                isValid = false
+            }
+            if (telefonoStr.isEmpty()) {
+                telefono.error = "Campo obligatorio"
+                isValid = false
+            } else if (telefonoStr.length < 10) {
+                telefono.error = "Debe tener 10 dígitos"
+                isValid = false
+            }
+            if (domicilioStr.isEmpty()) {
+                domicilio.error = "Campo obligatorio"
+                isValid = false
             }
 
             val puntosInt = puntos.text.toString().toIntOrNull()
+            if (puntos.text.isNotEmpty() && puntosInt == null) {
+                puntos.error = "Debe ser un número entero"
+                isValid = false
+            }
+
             val fechaActivacionTimestamp = fechaActivacion.text.toString().takeIf { it.isNotEmpty() }?.let {
-                Timestamp(dateFormat.parse(it)!!)
+                try {
+                    dateFormat.parse(it)?.let { date -> Timestamp(date) }
+                } catch (e: Exception) {
+                    fechaActivacion.error = "Formato no válido (dd/MM/yyyy)"
+                    isValid = false
+                    null
+                }
             }
             val fechaVencimientoTimestamp = fechaVencimiento.text.toString().takeIf { it.isNotEmpty() }?.let {
-                Timestamp(dateFormat.parse(it)!!)
+                try {
+                    dateFormat.parse(it)?.let { date -> Timestamp(date) }
+                } catch (e: Exception) {
+                    fechaVencimiento.error = "Formato no válido (dd/MM/yyyy)"
+                    isValid = false
+                    null
+                }
+            }
+
+            if (!isValid) {
+                return@setOnClickListener
             }
 
             val userData = mutableMapOf<String, Any>(
                 "nombre" to nombreStr,
                 "apellido" to apellidoStr,
-                "telefono" to telefono.text.toString().trim(),
-                "domicilio" to domicilio.text.toString().trim(),
+                "telefono" to telefonoStr,
+                "domicilio" to domicilioStr,
                 "rol" to rolStr,
                 "idTarjetaNFC" to nuevaIdTarjeta
             )
@@ -323,7 +373,6 @@ class EditarUsuarioActivity : AppCompatActivity() {
 
             db.collection("usuarios").document(uid).update(userData)
                 .addOnSuccessListener {
-                    // 1. Liberar tarjeta anterior si cambió o fue eliminada
                     if (!idTarjetaAnterior.isNullOrEmpty() && idTarjetaAnterior != nuevaIdTarjeta) {
                         db.collection("tarjetas_nfc")
                             .whereEqualTo("idTarjetaNFC", idTarjetaAnterior)
@@ -341,7 +390,6 @@ class EditarUsuarioActivity : AppCompatActivity() {
                             }
                     }
 
-                    // 2. Asignar nueva tarjeta si es distinta a la anterior
                     if (nuevaIdTarjeta.isNotEmpty() && nuevaIdTarjeta != idTarjetaAnterior) {
                         db.collection("tarjetas_nfc")
                             .whereEqualTo("idTarjetaNFC", nuevaIdTarjeta)
@@ -360,14 +408,14 @@ class EditarUsuarioActivity : AppCompatActivity() {
                     }
 
                     progressDialog.dismiss()
-                    Toast.makeText(this, "Usuario actualizado", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "La información del usuario se actualizó correctamente.", Toast.LENGTH_SHORT).show()
                     setResult(RESULT_OK)
                     finish()
                 }
-                .addOnFailureListener {
+                .addOnFailureListener { e ->
                     progressDialog.dismiss()
                     btnActualizar.isEnabled = true
-                    Toast.makeText(this, "Error al actualizar: ${it.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Error al actualizar el usuario: ${e.message}.", Toast.LENGTH_LONG).show()
                 }
         }
 

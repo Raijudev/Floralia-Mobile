@@ -79,7 +79,7 @@ class SplashActivity : AppCompatActivity() {
                         finish() // Cierra SplashActivity
                     }
                     .addOnFailureListener { e ->
-                        Log.e("SplashActivity", "Error al obtener usuario: ${e.message}")
+                        Log.e("SplashActivity", "Error al obtener usuario: ${e.message}.")
                         startActivity(Intent(this, LoginActivity::class.java))
                         finish()
                     }

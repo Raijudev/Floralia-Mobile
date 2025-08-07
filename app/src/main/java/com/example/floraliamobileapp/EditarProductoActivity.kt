@@ -38,7 +38,6 @@ class EditarProductoActivity : AppCompatActivity() {
 
     private lateinit var menuAgregarUsuario: TextView
     private lateinit var menuProductos: TextView
-    private lateinit var menuAgregarProducto: TextView
     private lateinit var menuPedidos: TextView
     private lateinit var menuUsuarios: TextView
     private lateinit var menuCortesdeCaja: TextView
@@ -55,6 +54,7 @@ class EditarProductoActivity : AppCompatActivity() {
 
         db = FirebaseFirestore.getInstance()
         idProducto = intent.getStringExtra("idProducto") ?: run {
+            Toast.makeText(this, "No se pudo cargar la información del producto. Inténtalo de nuevo.", Toast.LENGTH_LONG).show()
             finish()
             return
         }
@@ -67,8 +67,9 @@ class EditarProductoActivity : AppCompatActivity() {
         buttonGuardarCambios = findViewById(R.id.buttonGuardarCambios)
         buttonCargarImagen = findViewById(R.id.buttonCargarImagen)
         imageViewBack = findViewById(R.id.imageViewBack)
-        imageViewMenu = findViewById(R.id.imageViewMenu)
         drawerLayout = findViewById(R.id.drawerLayout)
+        imageViewMenu = findViewById(R.id.imageViewMenu)
+        imageViewMenuLogo = findViewById(R.id.imageViewMenuLogo)
 
         menuAgregarUsuario = findViewById(R.id.menuAgregarUsuario)
         menuProductos = findViewById(R.id.menuProductos)
@@ -86,32 +87,18 @@ class EditarProductoActivity : AppCompatActivity() {
         imageViewBack.setOnClickListener { finish() }
 
         // --- Inicio del fragmento de código del menú lateral ---
-        val drawerLayout = findViewById<DrawerLayout>(R.id.drawerLayout)
-        val imageViewMenu = findViewById<ImageView>(R.id.imageViewMenu)
-        val imageViewLogoMenu = findViewById<ImageView>(R.id.imageViewMenuLogo)
-
         val closeDrawer = {
             if (drawerLayout.isDrawerOpen(GravityCompat.END)) {
                 drawerLayout.closeDrawer(GravityCompat.END)
             }
         }
 
-        // Abrir menú lateral al dar clic en el ImageView del logo
         imageViewMenu.setOnClickListener {
             drawerLayout.openDrawer(GravityCompat.END)
         }
 
-        // Opciones del menú lateral
-        val menuAgregarUsuario = findViewById<TextView>(R.id.menuAgregarUsuario)
-        val menuProductos = findViewById<TextView>(R.id.menuProductos)
-        val menuPedidos = findViewById<TextView>(R.id.menuPedidos)
-        val menuUsuarios = findViewById<TextView>(R.id.menuUsuarios)
-        val menuCortesdeCaja = findViewById<TextView>(R.id.menuCortesdeCaja)
-        val menuInfoApp = findViewById<TextView>(R.id.menuInfoApp)
+        imageViewMenuLogo.setOnClickListener { closeDrawer() }
 
-        imageViewLogoMenu.setOnClickListener { closeDrawer() }
-
-        // --- Lógica de validación de rol para el menú ---
         val currentUserUid = FirebaseAuth.getInstance().currentUser?.uid
 
         if (currentUserUid != null) {
@@ -127,55 +114,41 @@ class EditarProductoActivity : AppCompatActivity() {
                             menuUsuarios.visibility = View.GONE
                         }
                     } else {
-                        // Documento del usuario no existe, ocultar por seguridad
                         menuUsuarios.visibility = View.GONE
                     }
                 }
                 .addOnFailureListener { exception ->
-                    // Error al obtener el rol, ocultar por seguridad
-                    println("Error al obtener el rol del usuario: $exception")
+                    println("Error al obtener el rol del usuario: $exception.")
                     menuUsuarios.visibility = View.GONE
                 }
         } else {
-            // No hay usuario logeado, ocultar por seguridad
             menuUsuarios.visibility = View.GONE
         }
-        // --- Fin de la lógica de validación de rol ---
 
-        // --- Resaltar la opción del menú actual (NUEVO CÓDIGO) ---
-        // Primero, restablece todos los colores a su estado normal
-        val defaultColor = resources.getColor(R.color.black, theme) // O el color por defecto de tu texto
+        val defaultColor = resources.getColor(R.color.black, theme)
         menuAgregarUsuario.setTextColor(defaultColor)
         menuProductos.setTextColor(defaultColor)
-        // Agrega aquí todas las opciones de menú que tengas
         menuPedidos.setTextColor(defaultColor)
         menuUsuarios.setTextColor(defaultColor)
         menuCortesdeCaja.setTextColor(defaultColor)
         menuInfoApp.setTextColor(defaultColor)
 
-        // Luego, aplica el color gris bajo a la opción de la actividad actual
         val highlightColor = resources.getColor(R.color.gray_light, theme)
 
         when (this) {
             is AgregarUsuarioActivity -> menuAgregarUsuario.setTextColor(highlightColor)
-            is InventarioActivity -> menuProductos.setTextColor(highlightColor) // Asumiendo que InventarioActivity es "Productos"
+            is InventarioActivity -> menuProductos.setTextColor(highlightColor)
             is HistorialPedidosActivity -> menuPedidos.setTextColor(highlightColor)
             is GestionUsuariosActivity -> menuUsuarios.setTextColor(highlightColor)
             is CortesDeCajaActivity -> menuCortesdeCaja.setTextColor(highlightColor)
             is InfoAppActivity -> menuInfoApp.setTextColor(highlightColor)
-            // Agrega más casos para cada una de tus actividades de menú
         }
-        // --- Fin de la lógica de resaltado ---
 
         menuAgregarUsuario.setOnClickListener {
             drawerLayout.closeDrawer(GravityCompat.END)
             val intent = Intent(this, AgregarUsuarioActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             startActivity(intent)
-            // No uses finish() aquí si quieres que la actividad actual (desde donde se abre el menú)
-            // permanezca en la pila si no es la misma que la que se va a iniciar.
-            // Solo usa finish() si la actividad actual NO debe permanecer si es diferente de la destino.
-            // Para un menú lateral, usualmente NO querrás hacer finish() aquí.
         }
 
         menuProductos.setOnClickListener {
@@ -239,7 +212,7 @@ class EditarProductoActivity : AppCompatActivity() {
 
                     val precio = doc.getDouble("precioUnitario")
                     if (precio != null) {
-                        editTextPrecioUnitario.setText("$${"%.2f".format(precio)}")
+                        editTextPrecioUnitario.setText("$%.2f".format(precio))
                     }
 
                     imagenBase64 = doc.getString("imagenBase64")
@@ -250,43 +223,81 @@ class EditarProductoActivity : AppCompatActivity() {
                     } catch (e: Exception) {
                         imageViewProducto.setImageResource(R.drawable.logo_floralia)
                     }
+                } else {
+                    Toast.makeText(this, "El producto no fue encontrado.", Toast.LENGTH_LONG).show()
+                    finish()
                 }
             }
-            .addOnFailureListener {
-                Toast.makeText(this, "Error al cargar producto", Toast.LENGTH_SHORT).show()
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Error al cargar la información del producto: ${e.message}.", Toast.LENGTH_LONG).show()
+                finish()
             }
     }
 
     private fun actualizarProducto() {
-        val nombre = editTextNombre.text.toString().trim()
-        val cantidad = editTextCantidad.text.toString().toIntOrNull()
-        val precio = obtenerPrecioComoDouble(editTextPrecioUnitario.text.toString())
+        // Limpia errores anteriores
+        editTextNombre.error = null
+        editTextCantidad.error = null
+        editTextPrecioUnitario.error = null
 
-        if (nombre.isEmpty() || cantidad == null || precio == null || imagenBase64 == null) {
-            Toast.makeText(this, "Completa todos los campos correctamente", Toast.LENGTH_SHORT).show()
+        val nombre = editTextNombre.text.toString().trim()
+        val cantidadStr = editTextCantidad.text.toString().trim()
+        val precioTexto = editTextPrecioUnitario.text.toString().trim()
+
+        var isValid = true
+
+        if (nombre.isEmpty()) {
+            editTextNombre.error = "El nombre no puede estar vacío"
+            isValid = false
+        }
+
+        val cantidad = cantidadStr.toIntOrNull()
+        if (cantidadStr.isEmpty()) {
+            editTextCantidad.error = "La cantidad no puede estar vacía"
+            isValid = false
+        } else if (cantidad == null || cantidad < 0) {
+            editTextCantidad.error = "Debe ser un número entero positivo"
+            isValid = false
+        }
+
+        val precio = obtenerPrecioComoDouble(precioTexto)
+        if (precioTexto.isEmpty()) {
+            editTextPrecioUnitario.error = "El precio no puede estar vacío"
+            isValid = false
+        } else if (precio == null || precio < 0) {
+            editTextPrecioUnitario.error = "Formato de precio no válido"
+            isValid = false
+        }
+
+        if (imagenBase64 == null) {
+            Toast.makeText(this, "Por favor, selecciona una imagen para el producto.", Toast.LENGTH_LONG).show()
+            isValid = false
+        }
+
+        if (!isValid) {
             return
         }
 
         val datos = mapOf(
             "nombre" to nombre,
-            "cantidad" to cantidad,
-            "precioUnitario" to precio,
+            "cantidad" to cantidad!!,
+            "precioUnitario" to precio!!,
             "imagenBase64" to imagenBase64!!
         )
 
-        progressDialog.setMessage("Editando producto...")
+        progressDialog.setMessage("Guardando cambios del producto...")
         progressDialog.show()
 
         db.collection("productos").document(idProducto).update(datos)
             .addOnSuccessListener {
                 progressDialog.dismiss()
-                Toast.makeText(this, "Producto actualizado", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Producto actualizado con éxito.", Toast.LENGTH_SHORT).show()
                 setResult(Activity.RESULT_OK)
                 finish()
             }
-            .addOnFailureListener {
+            .addOnFailureListener { e ->
                 progressDialog.dismiss()
-                Toast.makeText(this, "Error al actualizar: ${it.message}", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Error al guardar los cambios: ${e.message}.", Toast.LENGTH_LONG).show()
             }
     }
 

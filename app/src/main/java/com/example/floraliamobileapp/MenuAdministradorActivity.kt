@@ -8,8 +8,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import android.widget.Button
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import android.app.AlertDialog
 
 class MenuAdministradorActivity : AppCompatActivity() {
 
@@ -40,12 +42,12 @@ class MenuAdministradorActivity : AppCompatActivity() {
                         val rol = document.getString("rol") ?: ""
 
                         // Mostrar saludo personalizado
-                        tvBienvenida.text = "Bienvenido, $nombre $apellido!"
+                        tvBienvenida.text = "¡Bienvenido, $nombre $apellido!"
 
                         // Asignar imagen según el rol
                         when (rol.lowercase()) {
                             "administrador" -> imageViewPerfil.setImageResource(R.drawable.administrador)
-                            "empleado", "repartidor", "cliente" -> imageViewPerfil.setImageResource(R.drawable.usuario_empleado_cliente)
+                            "empleado" -> imageViewPerfil.setImageResource(R.drawable.usuario_empleado_cliente)
                             else -> imageViewPerfil.setImageResource(R.drawable.usuario_empleado_cliente)
                         }
 
@@ -63,7 +65,8 @@ class MenuAdministradorActivity : AppCompatActivity() {
                 }
                 .addOnFailureListener {
                     tvBienvenida.text = "Hola, Usuario!"
-                    Toast.makeText(this, "Error al obtener nombre", Toast.LENGTH_SHORT).show()
+                    // Mensaje Toast mejorado para ser más descriptivo
+                    Toast.makeText(this, "Error al cargar la información del usuario.", Toast.LENGTH_SHORT).show()
                 }
         }
 
@@ -93,12 +96,9 @@ class MenuAdministradorActivity : AppCompatActivity() {
         }
 
         // Botón de cerrar sesión
-        findViewById< TextView>(R.id.tvCerrarSesion).setOnClickListener {
-            // ⚠️ **Importante:** Asegúrate de que este TextView no se toque accidentalmente.
-            // Considera su posición y tamaño en el diseño.
-
+        findViewById<Button>(R.id.buttonCerrarSesion).setOnClickListener {
             // Crea un AlertDialog para confirmar el cierre de sesión
-            android.app.AlertDialog.Builder(this)
+            AlertDialog.Builder(this)
                 .setTitle("Cerrar Sesión") // Título del diálogo
                 .setMessage("¿Estás seguro de que quieres cerrar tu sesión?") // Mensaje de confirmación
                 .setPositiveButton("Sí") { dialog, which ->

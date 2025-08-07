@@ -32,7 +32,7 @@ class InventarioActivity : AppCompatActivity() {
     private lateinit var textViewSinResultados: TextView
 
     // Variable para almacenar el rol del usuario
-    private var currentUserRole: String? = null // <- NUEVO: Variable para el rol
+    private var currentUserRole: String? = null
 
     private val agregarProductoLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -69,10 +69,7 @@ class InventarioActivity : AppCompatActivity() {
             }
         })
 
-        // --- IMPORTANTE: La inicialización del adaptador se moverá después de obtener el rol ---
-        // adapter = ProductoAdapter(listaProductosFiltrada) { producto -> ... }
-
-        // --- Inicio del fragmento de código del menú lateral (con una pequeña modificación) ---
+        // --- Inicio del fragmento de código del menú lateral ---
         val drawerLayout = findViewById<DrawerLayout>(R.id.drawerLayout)
         val imageViewMenu = findViewById<ImageView>(R.id.imageViewMenu)
         val imageViewLogoMenu = findViewById<ImageView>(R.id.imageViewMenuLogo)
@@ -83,12 +80,10 @@ class InventarioActivity : AppCompatActivity() {
             }
         }
 
-        // Abrir menú lateral al dar clic en el ImageView del logo
         imageViewMenu.setOnClickListener {
             drawerLayout.openDrawer(GravityCompat.END)
         }
 
-        // Opciones del menú lateral
         val menuAgregarUsuario = findViewById<TextView>(R.id.menuAgregarUsuario)
         val menuProductos = findViewById<TextView>(R.id.menuProductos)
         val menuPedidos = findViewById<TextView>(R.id.menuPedidos)
@@ -98,8 +93,8 @@ class InventarioActivity : AppCompatActivity() {
 
         imageViewLogoMenu.setOnClickListener { closeDrawer() }
 
-        // --- Lógica de validación de rol para el menú y otras funcionalidades (MODIFICADO) ---
-        imageViewAbrirAgregarProducto = findViewById(R.id.imageViewAbrirAgregarProducto) // Asegurarse de que esté inicializado aquí
+        // --- Lógica de validación de rol para el menú y otras funcionalidades ---
+        imageViewAbrirAgregarProducto = findViewById(R.id.imageViewAbrirAgregarProducto)
 
         val currentUserUid = FirebaseAuth.getInstance().currentUser?.uid
 
@@ -110,12 +105,12 @@ class InventarioActivity : AppCompatActivity() {
                 .addOnSuccessListener { document ->
                     if (document != null) {
                         val rol = document.getString("rol")
-                        currentUserRole = rol // <- NUEVO: Asignar el rol a la variable de la actividad
+                        currentUserRole = rol
 
                         if (rol == "Administrador") {
                             menuUsuarios.visibility = View.VISIBLE
-                            imageViewAbrirAgregarProducto.visibility = View.VISIBLE // <- NUEVO: Mostrar botón para admin
-                            // Si es administrador, permite el click en las tarjetas
+                            menuAgregarUsuario.visibility = View.VISIBLE
+                            imageViewAbrirAgregarProducto.visibility = View.VISIBLE
                             adapter = ProductoAdapter(listaProductosFiltrada, rol) { producto ->
                                 val intent = Intent(this, EditarProductoActivity::class.java).apply {
                                     putExtra("idProducto", producto.uid)
@@ -124,44 +119,37 @@ class InventarioActivity : AppCompatActivity() {
                             }
                         } else if (rol == "Empleado") {
                             menuUsuarios.visibility = View.GONE
-                            imageViewAbrirAgregarProducto.visibility = View.GONE // <- NUEVO: Ocultar botón para empleado
-                            // Si es empleado, no permite el click en las tarjetas (se pasa null para el click listener)
+                            menuAgregarUsuario.visibility = View.GONE
+                            imageViewAbrirAgregarProducto.visibility = View.GONE
                             adapter = ProductoAdapter(listaProductosFiltrada, rol) { /* No hacer nada */ }
                         }
-                        recyclerView.adapter = adapter // <- Mover aquí la asignación del adapter
-                        cargarProductos() // <- Mover aquí para asegurar que el adaptador está configurado
+                        recyclerView.adapter = adapter
+                        cargarProductos()
                     } else {
-                        // Documento del usuario no existe, ocultar por seguridad
                         menuUsuarios.visibility = View.GONE
+                        menuAgregarUsuario.visibility = View.GONE
                         imageViewAbrirAgregarProducto.visibility = View.GONE
-                        // En caso de error o sin rol, el adaptador no permitirá clicks por seguridad
                         adapter = ProductoAdapter(listaProductosFiltrada, null) { /* No hacer nada */ }
                         recyclerView.adapter = adapter
                         cargarProductos()
                     }
                 }
                 .addOnFailureListener { exception ->
-                    // Error al obtener el rol, ocultar por seguridad
-                    println("Error al obtener el rol del usuario: $exception")
+                    println("Error al obtener el rol del usuario: $exception.")
                     menuUsuarios.visibility = View.GONE
                     imageViewAbrirAgregarProducto.visibility = View.GONE
-                    // En caso de error, el adaptador no permitirá clicks por seguridad
                     adapter = ProductoAdapter(listaProductosFiltrada, null) { /* No hacer nada */ }
                     recyclerView.adapter = adapter
                     cargarProductos()
                 }
         } else {
-            // No hay usuario logeado, ocultar por seguridad
             menuUsuarios.visibility = View.GONE
             imageViewAbrirAgregarProducto.visibility = View.GONE
-            // Sin usuario logeado, el adaptador no permitirá clicks por seguridad
             adapter = ProductoAdapter(listaProductosFiltrada, null) { /* No hacer nada */ }
             recyclerView.adapter = adapter
             cargarProductos()
         }
-        // --- Fin de la lógica de validación de rol ---
 
-        // --- Resaltar la opción del menú actual ---
         val defaultColor = resources.getColor(R.color.black, theme)
         menuAgregarUsuario.setTextColor(defaultColor)
         menuProductos.setTextColor(defaultColor)
@@ -180,7 +168,6 @@ class InventarioActivity : AppCompatActivity() {
             is CortesDeCajaActivity -> menuCortesdeCaja.setTextColor(highlightColor)
             is InfoAppActivity -> menuInfoApp.setTextColor(highlightColor)
         }
-        // --- Fin de la lógica de resaltado ---
 
         menuAgregarUsuario.setOnClickListener {
             drawerLayout.closeDrawer(GravityCompat.END)
@@ -190,7 +177,6 @@ class InventarioActivity : AppCompatActivity() {
 
         menuProductos.setOnClickListener {
             drawerLayout.closeDrawer(GravityCompat.END)
-            // Ya estás en esta pantalla, solo cierra el menú
         }
 
         menuPedidos.setOnClickListener {
@@ -216,10 +202,7 @@ class InventarioActivity : AppCompatActivity() {
             startActivity(Intent(this, InfoAppActivity::class.java))
             finish()
         }
-        // --- Fin del fragmento de código del menú lateral ---
 
-        // El listener de este botón ahora se configura dependiendo del rol dentro del addOnSuccessListener
-        // imageViewAbrirAgregarProducto = findViewById(R.id.imageViewAbrirAgregarProducto)
         imageViewAbrirAgregarProducto.setOnClickListener {
             val intent = Intent(this, AgregarProductoActivity::class.java)
             agregarProductoLauncher.launch(intent)

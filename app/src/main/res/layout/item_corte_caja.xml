@@ -19,35 +19,19 @@
         android:padding="12dp">
 
         <TextView
-            android:id="@+id/txtUidCorte"
+            android:id="@+id/txtFechas"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:fontFamily="@font/albert_sans"
-            android:maxLines="1"
-            android:text="UID: #Corte123ABC"
+            android:text="De 01/07/2025 08:00 a 01/07/2025 20:00"
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textStyle="bold"
             card_view:layout_constraintEnd_toStartOf="@+id/imgDownloadPdf"
             card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintTop_toTopOf="parent"
-            tools:text="UID: CORTEXYZ78901234567890ABCDEF" />
-
-        <TextView
-            android:id="@+id/txtFechas"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/albert_sans"
-            android:text="De 01/07/2025 08:00 a 01/07/2025 20:00"
-            android:textColor="#555555"
-            android:textSize="14sp"
-            android:maxLines="1"
-            android:ellipsize="end"
-            card_view:layout_constraintStart_toStartOf="parent"
-            card_view:layout_constraintEnd_toEndOf="parent"
-            card_view:layout_constraintTop_toBottomOf="@id/txtUidCorte"
+            tools:ignore="MissingConstraints"
             tools:text="De 01/07/2025 08:00 a 01/07/2025 20:00" />
 
         <TextView
@@ -55,14 +39,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:fontFamily="@font/albert_sans"
-            android:text="Generado por: Admin"
-            android:textColor="#555555"
-            android:textSize="14sp"
-            android:maxLines="1"
             android:ellipsize="end"
-            card_view:layout_constraintStart_toStartOf="parent"
+            android:fontFamily="@font/albert_sans"
+            android:maxLines="1"
+            android:text="Generado por: Admin"
+            android:textColor="@color/gray_light_text"
+            android:textSize="14sp"
             card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintTop_toBottomOf="@id/txtFechas"
             tools:text="Generado por: Administrador de Sistema" />
 
@@ -70,15 +54,15 @@
             android:id="@+id/txtTotalPedidos"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:fontFamily="@font/albert_sans"
-            android:text="Pedidos: 25"
-            android:textColor="#555555"
-            android:textSize="14sp"
-            android:maxLines="1"
+            android:layout_marginTop="4dp"
             android:ellipsize="end"
-            card_view:layout_constraintStart_toStartOf="parent"
+            android:fontFamily="@font/albert_sans"
+            android:maxLines="1"
+            android:text="Pedidos: 25"
+            android:textColor="@color/gray_light_text"
+            android:textSize="14sp"
             card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintTop_toBottomOf="@id/txtGeneradoPor" />
 
         <TextView
@@ -89,7 +73,7 @@
             android:fontFamily="@font/albert_sans"
             android:text="Ventas: $1,500.00"
             android:textColor="#27AE60"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textStyle="bold"
             card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintTop_toBottomOf="@id/txtTotalPedidos"

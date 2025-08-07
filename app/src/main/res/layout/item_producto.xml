@@ -31,40 +31,26 @@
             android:background="@drawable/image_rounded_corners" />
 
         <TextView
-            android:id="@+id/textViewUid"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@id/imageViewProducto"
-            android:layout_marginStart="16dp"
-            android:layout_toEndOf="@id/imageViewProducto"
-            android:fontFamily="@font/albert_sans"
-            android:text="UID: "
-            android:textAlignment="viewStart"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            android:textStyle="bold" />
-
-        <TextView
             android:id="@+id/textViewNombre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/textViewUid"
-            android:layout_alignStart="@id/textViewUid"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
             android:layout_toEndOf="@id/imageViewProducto"
             android:ellipsize="end"
             android:fontFamily="@font/albert_sans"
             android:maxLines="1"
             android:text="Nombre del producto largo de ejemplo"
-            android:textColor="@color/gray_light_text"
-            android:textSize="14sp" />
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/textViewCantidad"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/textViewNombre"
-            android:layout_alignStart="@id/textViewUid"
+            android:layout_alignStart="@id/textViewNombre"
             android:layout_marginTop="4dp"
             android:fontFamily="@font/albert_sans"
             android:text="Cantidad: 10 unidades"
@@ -76,7 +62,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/textViewCantidad"
-            android:layout_alignStart="@id/textViewUid"
+            android:layout_alignStart="@id/textViewNombre"
             android:layout_marginTop="4dp"
             android:fontFamily="@font/albert_sans"
             android:text="$100.00 MXN"

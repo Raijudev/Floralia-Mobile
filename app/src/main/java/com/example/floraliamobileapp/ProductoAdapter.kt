@@ -30,14 +30,11 @@ class ProductoAdapter(
 
     class ProductoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val imagen: ImageView = itemView.findViewById(R.id.imageViewProducto)
-        private val uidTextView: TextView = itemView.findViewById(R.id.textViewUid) // <- NUEVO
         private val nombre: TextView = itemView.findViewById(R.id.textViewNombre)
         private val cantidad: TextView = itemView.findViewById(R.id.textViewCantidad)
         private val precio: TextView = itemView.findViewById(R.id.textViewPrecio)
 
         fun bind(producto: Producto, userRole: String?, onEditarClick: (Producto) -> Unit) {
-            // Asignar el UID al TextView correspondiente
-            uidTextView.text = "${producto.uid}" // <- NUEVO
 
             nombre.text = producto.nombre
             cantidad.text = "Cantidad: ${producto.cantidad}"
@@ -45,6 +42,7 @@ class ProductoAdapter(
             // Formatear el precio como MXN
             val formato = NumberFormat.getCurrencyInstance(Locale("es", "MX"))
             precio.text = formato.format(producto.precioUnitario)
+            precio.text = "${precio.text} MXN"
 
             // Decodificar la imagen desde Base64
             try {

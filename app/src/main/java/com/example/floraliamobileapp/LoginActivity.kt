@@ -13,44 +13,50 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class LoginActivity : AppCompatActivity() {
 
-    // Variable para la autenticación con Firebase
     private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Establecer el diseño en XML como layout principal
         setContentView(R.layout.activity_login)
 
-        // Inicializar Firebase
         FirebaseApp.initializeApp(this)
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
 
-        // Referencias a los elementos XML
         val emailEditText = findViewById<EditText>(R.id.editTextTextEmailAddress1)
         val passwordEditText = findViewById<EditText>(R.id.editTextTextPassword1)
         val loginButton = findViewById<Button>(R.id.buttonContinuar)
 
-        // Botón de inicio de sesión
         loginButton.setOnClickListener {
             val email = emailEditText.text.toString().trim()
             val password = passwordEditText.text.toString()
 
-            if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Por favor completa todos los campos", Toast.LENGTH_SHORT).show()
+            // Limpia los errores anteriores
+            emailEditText.error = null
+            passwordEditText.error = null
+
+            // Validación de campos vacíos
+            var isValid = true
+            if (email.isEmpty()) {
+                emailEditText.error = "Campo obligatorio"
+                isValid = false
+            }
+            if (password.isEmpty()) {
+                passwordEditText.error = "Campo obligatorio"
+                isValid = false
+            }
+
+            if (!isValid) {
                 return@setOnClickListener
             }
 
-            // Iniciar sesión con Firebase
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
-                        // Obtener UID del usuario autenticado
                         val uid = auth.currentUser?.uid
                         if (uid != null) {
-                            // Consultar Firestore para obtener el rol
                             firestore.collection("usuarios")
                                 .document(uid)
                                 .get()
@@ -72,22 +78,23 @@ class LoginActivity : AppCompatActivity() {
                                                 finish()
                                             }
                                             else -> {
-                                                Toast.makeText(this, "Rol no válido o no asignado", Toast.LENGTH_SHORT).show()
+                                                Toast.makeText(this, "El rol asignado no es válido.", Toast.LENGTH_SHORT).show()
                                             }
                                         }
                                     } else {
-                                        Toast.makeText(this, "Usuario no encontrado en Firestore", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(this, "Usuario no encontrado en la base de datos.", Toast.LENGTH_SHORT).show()
                                     }
                                 }
                                 .addOnFailureListener { e ->
-                                    Toast.makeText(this, "Error al obtener el rol: ${e.message}", Toast.LENGTH_LONG).show()
-                                    Log.e("Firestore", "Error al obtener documento", e)
+                                    Toast.makeText(this, "Error al obtener la información del usuario: ${e.message}.", Toast.LENGTH_LONG).show()
+                                    Log.e("Firestore", "Error al obtener documento.", e)
                                 }
                         }
                     } else {
-                        // Error en el login
-                        Toast.makeText(this, "Error: ${task.exception?.message}", Toast.LENGTH_LONG).show()
-                        Log.e("FirebaseAuth", "signInWithEmailAndPassword", task.exception)
+                        // En caso de fallo, se muestra el error en el campo de contraseña
+                        passwordEditText.error = "Correo o contraseña incorrectos"
+                        Toast.makeText(this, "Error al iniciar sesión: ${task.exception?.message}.", Toast.LENGTH_LONG).show()
+                        Log.e("FirebaseAuth", "signInWithEmailAndPassword.", task.exception)
                     }
                 }
         }

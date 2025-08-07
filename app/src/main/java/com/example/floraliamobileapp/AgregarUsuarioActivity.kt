@@ -26,6 +26,10 @@ class AgregarUsuarioActivity : AppCompatActivity() {
 
     private val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 
+    // Handler y Runnable para implementar el "debounce"
+    private val validationHandler = android.os.Handler(android.os.Looper.getMainLooper())
+    private var validationRunnable: Runnable? = null
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,12 +52,10 @@ class AgregarUsuarioActivity : AppCompatActivity() {
             }
         }
 
-        // Abrir menú lateral al dar clic en el ImageView del logo
         imageViewMenu.setOnClickListener {
             drawerLayout.openDrawer(GravityCompat.END)
         }
 
-        // Opciones del menú lateral
         val menuAgregarUsuario = findViewById<TextView>(R.id.menuAgregarUsuario)
         val menuProductos = findViewById<TextView>(R.id.menuProductos)
         val menuPedidos = findViewById<TextView>(R.id.menuPedidos)
@@ -63,7 +65,6 @@ class AgregarUsuarioActivity : AppCompatActivity() {
 
         imageViewLogoMenu.setOnClickListener { closeDrawer() }
 
-        // --- Lógica de validación de rol para el menú ---
         val currentUserUid = FirebaseAuth.getInstance().currentUser?.uid
 
         if (currentUserUid != null) {
@@ -79,33 +80,25 @@ class AgregarUsuarioActivity : AppCompatActivity() {
                             menuUsuarios.visibility = View.GONE
                         }
                     } else {
-                        // Documento del usuario no existe, ocultar por seguridad
                         menuUsuarios.visibility = View.GONE
                     }
                 }
                 .addOnFailureListener { exception ->
-                    // Error al obtener el rol, ocultar por seguridad
-                    println("Error al obtener el rol del usuario: $exception")
+                    println("Error al obtener el rol del usuario: $exception.")
                     menuUsuarios.visibility = View.GONE
                 }
         } else {
-            // No hay usuario logeado, ocultar por seguridad
             menuUsuarios.visibility = View.GONE
         }
-        // --- Fin de la lógica de validación de rol ---
 
-        // --- Resaltar la opción del menú actual (NUEVO CÓDIGO) ---
-        // Primero, restablece todos los colores a su estado normal
-        val defaultColor = resources.getColor(R.color.black, theme) // O el color por defecto de tu texto
+        val defaultColor = resources.getColor(R.color.black, theme)
         menuAgregarUsuario.setTextColor(defaultColor)
         menuProductos.setTextColor(defaultColor)
-        // Agrega aquí todas las opciones de menú que tengas
         menuPedidos.setTextColor(defaultColor)
         menuUsuarios.setTextColor(defaultColor)
         menuCortesdeCaja.setTextColor(defaultColor)
         menuInfoApp.setTextColor(defaultColor)
 
-        // Luego, aplica el color gris bajo a la opción de la actividad actual
         val highlightColor = resources.getColor(R.color.gray_light, theme)
 
         when (this) {
@@ -115,51 +108,41 @@ class AgregarUsuarioActivity : AppCompatActivity() {
             is GestionUsuariosActivity -> menuUsuarios.setTextColor(highlightColor)
             is CortesDeCajaActivity -> menuCortesdeCaja.setTextColor(highlightColor)
             is InfoAppActivity -> menuInfoApp.setTextColor(highlightColor)
-            // Agrega más casos para cada una de tus actividades de menú
         }
-        // --- Fin de la lógica de resaltado ---
 
         menuAgregarUsuario.setOnClickListener {
             drawerLayout.closeDrawer(GravityCompat.END)
-            // Ya estás en esta pantalla, solo cierra el menú
         }
-
         menuProductos.setOnClickListener {
             drawerLayout.closeDrawer(GravityCompat.END)
             startActivity(Intent(this, InventarioActivity::class.java))
             finish()
         }
-
         menuPedidos.setOnClickListener {
             drawerLayout.closeDrawer(GravityCompat.END)
             startActivity(Intent(this, HistorialPedidosActivity::class.java))
             finish()
         }
-
         menuUsuarios.setOnClickListener {
             drawerLayout.closeDrawer(GravityCompat.END)
             startActivity(Intent(this, GestionUsuariosActivity::class.java))
             finish()
         }
-
         menuCortesdeCaja.setOnClickListener {
             drawerLayout.closeDrawer(GravityCompat.END)
             startActivity(Intent(this, CortesDeCajaActivity::class.java))
             finish()
         }
-
         menuInfoApp.setOnClickListener {
             drawerLayout.closeDrawer(GravityCompat.END)
             startActivity(Intent(this, InfoAppActivity::class.java))
             finish()
         }
-        // --- Fin del fragmento de código del menú lateral ---
 
         progressDialog = ProgressDialog(this)
-        progressDialog.setMessage("Agregando Usuario...")
+        progressDialog.setMessage("Agregando usuario...")
         progressDialog.setCancelable(false)
 
-        // Referencias UI
         val nombre = findViewById<EditText>(R.id.editTextNombre)
         val apellido = findViewById<EditText>(R.id.editTextApellido)
         val telefono = findViewById<EditText>(R.id.editTextTelefono)
@@ -174,17 +157,26 @@ class AgregarUsuarioActivity : AppCompatActivity() {
         val fechaVencimiento = findViewById<EditText>(R.id.editTextFechaVencimiento)
         val btnAgregar = findViewById<Button>(R.id.buttonAgregarUsuario)
 
-        val roles = arrayOf("Administrador", "Empleado", "Cliente")
+        val roles = arrayOf("Administrador", "Empleado")
         spinnerRol.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, roles)
 
-        // TextWatcher para idTarjeta NFC: llena puntos y fechas conforme se escribe
         idTarjeta.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
             override fun afterTextChanged(s: Editable?) {
+                validationRunnable?.let { validationHandler.removeCallbacks(it) }
+
                 val tarjetaId = s.toString().trim()
-                if (tarjetaId.isNotEmpty()) {
+                if (tarjetaId.isEmpty()) {
+                    idTarjeta.error = null
+                    puntos.setText("")
+                    fechaActivacion.setText("")
+                    fechaVencimiento.setText("")
+                    return
+                }
+
+                validationRunnable = Runnable {
                     db.collection("tarjetas_nfc")
                         .whereEqualTo("idTarjetaNFC", tarjetaId)
                         .get()
@@ -194,20 +186,23 @@ class AgregarUsuarioActivity : AppCompatActivity() {
                                 val estado = tarjetaDoc.getString("estado") ?: "Desconocido"
 
                                 if (estado == "Asignada" || estado == "Cancelada") {
-                                    Toast.makeText(
-                                        this@AgregarUsuarioActivity,
-                                        if (estado == "Asignada") "La tarjeta ya está asignada" else "Esta tarjeta ha sido cancelada y no puede usarse",
-                                        Toast.LENGTH_LONG
-                                    ).show()
-
-                                    // Evitar ciclo: limpiar con delay
-                                    idTarjeta.post {
-                                        idTarjeta.setText("")
+                                    val mensajeError = if (estado == "Asignada") {
+                                        "Esta tarjeta ya ha sido asignada a otro usuario."
+                                    } else {
+                                        "Esta tarjeta está cancelada y no se puede usar."
                                     }
+                                    idTarjeta.error = mensajeError
+
+                                    idTarjeta.postDelayed({
+                                        idTarjeta.setText("")
+                                        idTarjeta.error = null
+                                    }, 500)
+
                                     puntos.setText("")
                                     fechaActivacion.setText("")
                                     fechaVencimiento.setText("")
                                 } else {
+                                    idTarjeta.error = null
                                     val puntosValue = tarjetaDoc.getLong("puntos") ?: 0
                                     val activacionTS = tarjetaDoc.getTimestamp("fechaActivacion")
                                     val vencimientoTS = tarjetaDoc.getTimestamp("fechaVencimiento")
@@ -221,23 +216,32 @@ class AgregarUsuarioActivity : AppCompatActivity() {
                                     } ?: fechaVencimiento.setText("")
                                 }
                             } else {
+                                idTarjeta.error = "La tarjeta ingresada no existe."
                                 puntos.setText("")
                                 fechaActivacion.setText("")
                                 fechaVencimiento.setText("")
                             }
                         }
                         .addOnFailureListener {
-                            Toast.makeText(this@AgregarUsuarioActivity, "Error al buscar tarjeta: ${it.message}", Toast.LENGTH_SHORT).show()
+                            idTarjeta.error = "Error al buscar la tarjeta: ${it.message}."
                         }
-                } else {
-                    puntos.setText("")
-                    fechaActivacion.setText("")
-                    fechaVencimiento.setText("")
                 }
+                validationHandler.postDelayed(validationRunnable!!, 500)
             }
         })
 
         btnAgregar.setOnClickListener {
+            // Limpia errores previos al intentar agregar
+            nombre.error = null
+            apellido.error = null
+            telefono.error = null
+            domicilio.error = null
+            correo.error = null
+            contrasena.error = null
+            puntos.error = null
+            fechaActivacion.error = null
+            fechaVencimiento.error = null
+
             val name = nombre.text.toString().trim()
             val lastName = apellido.text.toString().trim()
             val tel = telefono.text.toString().trim()
@@ -251,55 +255,81 @@ class AgregarUsuarioActivity : AppCompatActivity() {
             val fechaActivacionStr = fechaActivacion.text.toString().trim()
             val fechaVencimientoStr = fechaVencimiento.text.toString().trim()
 
-            if (name.isEmpty() || lastName.isEmpty() || tel.isEmpty() || dom.isEmpty() || email.isEmpty() || pass.isEmpty()) {
-                Toast.makeText(this, "Llene todos los campos obligatorios", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
+            var isValid = true
 
-            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                Toast.makeText(this, "Correo electrónico inválido", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
+            if (name.isEmpty()) {
+                nombre.error = "Campo obligatorio"
+                isValid = false
             }
-
+            if (lastName.isEmpty()) {
+                apellido.error = "Campo obligatorio"
+                isValid = false
+            }
+            if (tel.isEmpty()) {
+                telefono.error = "Campo obligatorio"
+                isValid = false
+            }
             if (tel.length < 10) {
-                Toast.makeText(this, "Teléfono inválido", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
+                telefono.error = "Debe tener 10 dígitos"
+                isValid = false
             }
-
-            if (pass.length < 6) {
-                Toast.makeText(this, "La contraseña debe tener al menos 6 caracteres", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
+            if (dom.isEmpty()) {
+                domicilio.error = "Campo obligatorio"
+                isValid = false
+            }
+            if (email.isEmpty()) {
+                correo.error = "Campo obligatorio"
+                isValid = false
+            } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                correo.error = "Formato de correo no válido"
+                isValid = false
+            }
+            if (pass.isEmpty()) {
+                contrasena.error = "Campo obligatorio"
+                isValid = false
+            } else if (pass.length < 6) {
+                contrasena.error = "Mínimo 6 caracteres"
+                isValid = false
             }
 
             val fechaActivacionTS = fechaActivacionStr.takeIf { it.isNotEmpty() }?.let {
-                try { Timestamp(dateFormat.parse(it)!!) }
-                catch (e: Exception) {
-                    Toast.makeText(this, "Fecha de activación inválida", Toast.LENGTH_SHORT).show()
-                    return@setOnClickListener
+                try {
+                    Timestamp(dateFormat.parse(it)!!)
+                } catch (e: Exception) {
+                    fechaActivacion.error = "Formato no válido (dd/MM/yyyy)"
+                    isValid = false
+                    null
                 }
             }
-
             val fechaVencimientoTS = fechaVencimientoStr.takeIf { it.isNotEmpty() }?.let {
-                try { Timestamp(dateFormat.parse(it)!!) }
-                catch (e: Exception) {
-                    Toast.makeText(this, "Fecha de vencimiento inválida", Toast.LENGTH_SHORT).show()
-                    return@setOnClickListener
+                try {
+                    Timestamp(dateFormat.parse(it)!!)
+                } catch (e: Exception) {
+                    fechaVencimiento.error = "Formato no válido (dd/MM/yyyy)"
+                    isValid = false
+                    null
                 }
             }
 
             val puntosInt = puntosStr.takeIf { it.isNotEmpty() }?.toIntOrNull()
             if (puntosStr.isNotEmpty() && puntosInt == null) {
-                Toast.makeText(this, "Los puntos deben ser numéricos", Toast.LENGTH_SHORT).show()
+                puntos.error = "Debe ser un número entero"
+                isValid = false
+            }
+
+            if (!isValid) {
+                // Si la validación falla, no se continúa
                 return@setOnClickListener
             }
 
+            // Continuar con el proceso de creación de usuario si la validación es exitosa
             progressDialog.show()
             auth.fetchSignInMethodsForEmail(email).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val signInMethods = task.result?.signInMethods
                     if (!signInMethods.isNullOrEmpty()) {
                         progressDialog.dismiss()
-                        Toast.makeText(this, "El correo ya está registrado", Toast.LENGTH_SHORT).show()
+                        correo.error = "Este correo ya está registrado"
                     } else {
                         if (idTarjetaNFC.isNotEmpty()) {
                             db.collection("tarjetas_nfc")
@@ -310,18 +340,18 @@ class AgregarUsuarioActivity : AppCompatActivity() {
                                         val doc = querySnapshot.documents[0]
                                         if (doc.getString("estado") == "Asignada") {
                                             progressDialog.dismiss()
-                                            Toast.makeText(this, "La tarjeta ya está asignada", Toast.LENGTH_SHORT).show()
+                                            idTarjeta.error = "Tarjeta asignada a otro usuario"
                                         } else {
                                             crearUsuarioFirebase(name, lastName, tel, dom, email, pass, rolSeleccionado, curpText, idTarjetaNFC, puntosInt, fechaActivacionTS, fechaVencimientoTS)
                                         }
                                     } else {
                                         progressDialog.dismiss()
-                                        Toast.makeText(this, "La tarjeta no existe", Toast.LENGTH_SHORT).show()
+                                        idTarjeta.error = "La tarjeta no existe"
                                     }
                                 }
                                 .addOnFailureListener {
                                     progressDialog.dismiss()
-                                    Toast.makeText(this, "Error al validar la tarjeta", Toast.LENGTH_SHORT).show()
+                                    idTarjeta.error = "Error al validar la tarjeta"
                                 }
                         } else {
                             crearUsuarioFirebase(name, lastName, tel, dom, email, pass, rolSeleccionado, curpText, null, puntosInt, fechaActivacionTS, fechaVencimientoTS)
@@ -329,12 +359,12 @@ class AgregarUsuarioActivity : AppCompatActivity() {
                     }
                 } else {
                     progressDialog.dismiss()
-                    Toast.makeText(this, "Error al verificar correo", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Error al verificar el correo: ${task.exception?.message}.", Toast.LENGTH_SHORT).show()
                 }
             }
         }
     }
-    
+
     private fun crearUsuarioFirebase(
         nombre: String, apellido: String, telefono: String, domicilio: String,
         correo: String, contrasena: String, rol: String, curp: String?,
@@ -362,7 +392,6 @@ class AgregarUsuarioActivity : AppCompatActivity() {
                                 .addOnSuccessListener { snap ->
                                     if (!snap.isEmpty) {
                                         val tarjetaRef = snap.documents[0].reference
-                                        // Actualiza estado y asignadoAUid
                                         tarjetaRef.update(
                                             mapOf(
                                                 "estado" to "Asignada",
@@ -371,27 +400,27 @@ class AgregarUsuarioActivity : AppCompatActivity() {
                                         )
                                     }
                                     progressDialog.dismiss()
-                                    Toast.makeText(this, "Usuario agregado correctamente", Toast.LENGTH_LONG).show()
+                                    Toast.makeText(this, "Usuario agregado correctamente.", Toast.LENGTH_LONG).show()
                                     limpiarCampos()
                                 }
                                 .addOnFailureListener {
                                     progressDialog.dismiss()
-                                    Toast.makeText(this, "Error al actualizar tarjeta: ${it.message}", Toast.LENGTH_LONG).show()
+                                    Toast.makeText(this, "El usuario fue creado, pero hubo un error al asignar la tarjeta: ${it.message}.", Toast.LENGTH_LONG).show()
                                 }
                         } else {
                             progressDialog.dismiss()
-                            Toast.makeText(this, "Usuario agregado correctamente", Toast.LENGTH_LONG).show()
+                            Toast.makeText(this, "Usuario agregado correctamente.", Toast.LENGTH_LONG).show()
                             limpiarCampos()
                         }
                     }
                     .addOnFailureListener {
                         progressDialog.dismiss()
-                        Toast.makeText(this, "Error al guardar usuario: ${it.message}", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, "Error al guardar la información del usuario: ${it.message}.", Toast.LENGTH_LONG).show()
                     }
             }
             .addOnFailureListener {
                 progressDialog.dismiss()
-                Toast.makeText(this, "Error al crear usuario: ${it.message}", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Error al crear la cuenta de usuario: ${it.message}.", Toast.LENGTH_LONG).show()
             }
     }
 

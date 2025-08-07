@@ -118,7 +118,7 @@ class CortesDeCajaActivity : AppCompatActivity() {
                 recyclerCortes.adapter = adaptador
             }
             .addOnFailureListener { exception ->
-                Toast.makeText(this, "Error al cargar cortes: ${exception.message}", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Error al cargar cortes: ${exception.message}.", Toast.LENGTH_LONG).show()
             }
 
 
@@ -175,18 +175,22 @@ class CortesDeCajaActivity : AppCompatActivity() {
                         val rol = document.getString("rol")
                         if (rol == "Administrador") {
                             menuUsuarios.visibility = View.VISIBLE
+                            menuAgregarUsuario.visibility = View.VISIBLE
                         } else if (rol == "Empleado") {
                             menuUsuarios.visibility = View.GONE
+                            menuAgregarUsuario.visibility = View.GONE
                         }
                     } else {
                         // Documento del usuario no existe, ocultar por seguridad
                         menuUsuarios.visibility = View.GONE
+                        menuAgregarUsuario.visibility = View.GONE
                     }
                 }
                 .addOnFailureListener { exception ->
                     // Error al obtener el rol, ocultar por seguridad
-                    println("Error al obtener el rol del usuario: $exception")
+                    println("Error al obtener el rol del usuario: $exception.")
                     menuUsuarios.visibility = View.GONE
+                    menuAgregarUsuario.visibility = View.GONE
                 }
         } else {
             // No hay usuario logeado, ocultar por seguridad
@@ -324,7 +328,7 @@ class CortesDeCajaActivity : AppCompatActivity() {
 
                 if (corte == null) {
                     withContext(Dispatchers.Main) {
-                        Toast.makeText(this@CortesDeCajaActivity, "Error: Corte de caja no encontrado.", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@CortesDeCajaActivity, "Corte de caja no encontrado.", Toast.LENGTH_LONG).show()
                     }
                     return@launch
                 }
@@ -383,9 +387,9 @@ class CortesDeCajaActivity : AppCompatActivity() {
                 addInfoRow(tableResumen, "Efectivo", "$${String.format("%.2f", corte.efectivo)}")
                 addInfoRow(tableResumen, "Tarjeta", "$${String.format("%.2f", corte.tarjeta)}")
                 addInfoRow(tableResumen, "Transferencia", "$${String.format("%.2f", corte.transferencia)}")
-                addInfoRow(tableResumen, "Puntos (Equivalente)", "${String.format("%.2f", corte.puntos)}")
-                addInfoRow(tableResumen, "Puntos Usados Total", "${String.format("%.2f", corte.puntosUsadosTotal)}")
-                addInfoRow(tableResumen, "Puntos Ganados Total", "${String.format("%.2f", corte.puntosGanadosTotal)}")
+                addInfoRow(tableResumen, "Puntos", "${String.format("%.2f", corte.puntos)}")
+                addInfoRow(tableResumen, "Puntos Usados en Total", "${String.format("%.2f", corte.puntosUsadosTotal)}")
+                addInfoRow(tableResumen, "Puntos Ganados en Total", "${String.format("%.2f", corte.puntosGanadosTotal)}")
                 addInfoRow(tableResumen, "Total de Pedidos", "${corte.totalPedidos}")
                 addInfoRow(tableResumen, "Total de Ventas", "$${String.format("%.2f", corte.totalVentas)}")
                 document.add(tableResumen)
@@ -405,7 +409,7 @@ class CortesDeCajaActivity : AppCompatActivity() {
                         setWidths(floatArrayOf(1.5f, 1.5f, 2f, 1.5f, 1f, 1f))
                         setHeaderRows(1) // Repite el encabezado en nuevas páginas
                     }
-                    addTableHeader(tablePedidos, listOf("UID Pedido", "Fecha Creación", "Cliente", "Método Pago", "Estado", "Total Final"))
+                    addTableHeader(tablePedidos, listOf("Núm. de Pedido", "Fecha y Hora de Creación", "Cliente", "Método de Pago", "Estado del Pedido", "Total Final"))
 
                     pedidos.forEachIndexed { index, pedido ->
                         addCell(tablePedidos, pedido.uid, index)
@@ -425,14 +429,14 @@ class CortesDeCajaActivity : AppCompatActivity() {
                 document.close()
 
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@CortesDeCajaActivity, "PDF generado en: ${filePath.absolutePath}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@CortesDeCajaActivity, "PDF generado en: ${filePath.absolutePath}.", Toast.LENGTH_LONG).show()
                     openPdf(filePath)
                     pendingCorteUidForPdf = null
                 }
 
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@CortesDeCajaActivity, "Error al generar PDF: ${e.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@CortesDeCajaActivity, "Error al generar PDF: ${e.message}.", Toast.LENGTH_LONG).show()
                     e.printStackTrace()
                 }
             }
@@ -532,7 +536,7 @@ class CortesDeCajaActivity : AppCompatActivity() {
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            Toast.makeText(this, "Error al añadir logo al PDF: ${e.message}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Error al añadir logo al PDF: ${e.message}.", Toast.LENGTH_SHORT).show()
         }
     }
 

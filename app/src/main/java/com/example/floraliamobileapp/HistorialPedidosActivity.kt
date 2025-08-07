@@ -126,18 +126,22 @@ class HistorialPedidosActivity : AppCompatActivity() {
                         val rol = document.getString("rol")
                         if (rol == "Administrador") {
                             menuUsuarios.visibility = View.VISIBLE
+                            menuAgregarUsuario.visibility = View.VISIBLE
                         } else if (rol == "Empleado") {
                             menuUsuarios.visibility = View.GONE
+                            menuAgregarUsuario.visibility = View.GONE
                         }
                     } else {
                         // Documento del usuario no existe, ocultar por seguridad
                         menuUsuarios.visibility = View.GONE
+                        menuAgregarUsuario.visibility = View.GONE
                     }
                 }
                 .addOnFailureListener { exception ->
                     // Error al obtener el rol, ocultar por seguridad
-                    println("Error al obtener el rol del usuario: $exception")
+                    println("Error al obtener el rol del usuario: $exception.")
                     menuUsuarios.visibility = View.GONE
+                    menuAgregarUsuario.visibility = View.GONE
                 }
         } else {
             // No hay usuario logeado, ocultar por seguridad
@@ -388,7 +392,7 @@ class HistorialPedidosActivity : AppCompatActivity() {
             Toast.makeText(this, "No hay aplicación para abrir PDFs instalada en el dispositivo.", Toast.LENGTH_SHORT).show()
             e.printStackTrace()
         } catch (e: Exception) {
-            Toast.makeText(this, "Error inesperado al intentar abrir el PDF: ${e.message}", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Error inesperado al intentar abrir el PDF: ${e.message}.", Toast.LENGTH_LONG).show()
             e.printStackTrace()
         }
     }
@@ -542,10 +546,10 @@ class HistorialPedidosActivity : AppCompatActivity() {
                 y += 25f // Espaciado consistente
                 y = dibujarTablaClaveValor(
                     listOf(
-                        "UID Pedido:" to pedido.uid,
-                        "Tarjeta NFC:" to pedido.idTarjetaNFC,
-                        "Fecha de Creación:" to formatoFecha(pedido.fechaHoraCreacion),
-                        "Fecha de Entrega:" to formatoFecha(pedido.fechaHoraEntrega),
+                        "Núm. de Pedido:" to pedido.uid,
+                        "ID Tarjeta NFC:" to pedido.idTarjetaNFC,
+                        "Fecha y Hora de Creación:" to formatoFecha(pedido.fechaHoraCreacion),
+                        "Fecha y Hora de Entrega:" to formatoFecha(pedido.fechaHoraEntrega),
                         "Cliente:" to pedido.cliente,
                         "Método de Pago:" to pedido.metodoPago,
                         "Tipo de Pedido:" to pedido.tipoPedido,
@@ -563,8 +567,8 @@ class HistorialPedidosActivity : AppCompatActivity() {
                     listOf(
                         "Subtotal:" to formatoMoneda(pedido.subTotal),
                         "Impuestos:" to formatoMoneda(pedido.impuestos),
-                        "Puntos Antes:" to pedido.puntosAntesCompra.toString(),
-                        "Puntos Usados:" to pedido.puntosDescontados.toString(),
+                        "Puntos Antes :" to pedido.puntosAntesCompra.toString(),
+                        "Puntos Descontados:" to pedido.puntosDescontados.toString(),
                         "Puntos Ganados:" to pedido.puntosGanados.toString(),
                         "Puntos Totales:" to pedido.puntosTotales.toString(),
                         "Total Final:" to formatoMoneda(pedido.totalFinal)
@@ -725,7 +729,7 @@ class HistorialPedidosActivity : AppCompatActivity() {
                         } ?: throw IOException("No se pudo crear el archivo. URI es nula.")
                     } catch (e: Exception) {
                         e.printStackTrace()
-                        Toast.makeText(this, "Error al guardar PDF (Android Q+): ${e.message}", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, "Error al guardar PDF (Android Q+): ${e.message}.", Toast.LENGTH_LONG).show()
                     }
                 } else {
                     val downloadsPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
@@ -738,14 +742,14 @@ class HistorialPedidosActivity : AppCompatActivity() {
                         abrirPDF(file)
                     } catch (e: Exception) {
                         e.printStackTrace()
-                        Toast.makeText(this, "Error al guardar PDF (Android < Q): ${e.message}", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, "Error al guardar PDF (Android < Q): ${e.message}.", Toast.LENGTH_LONG).show()
                     }
                 }
 
                 pdf.close()
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Error al obtener productos del pedido: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Error al obtener productos del pedido: ${e.message}.", Toast.LENGTH_SHORT).show()
                 e.printStackTrace() // Log the error for debugging
             }
     }
@@ -761,7 +765,7 @@ class HistorialPedidosActivity : AppCompatActivity() {
             Toast.makeText(this, "No hay aplicación para abrir PDFs instalada.", Toast.LENGTH_SHORT).show()
             e.printStackTrace()
         } catch (e: Exception) {
-            Toast.makeText(this, "Error inesperado al intentar abrir el PDF (URI): ${e.message}", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Error inesperado al intentar abrir el PDF (URI): ${e.message}.", Toast.LENGTH_LONG).show()
             e.printStackTrace()
         }
     }

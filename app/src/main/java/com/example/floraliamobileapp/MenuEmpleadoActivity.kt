@@ -6,10 +6,12 @@ import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import android.app.AlertDialog
 
 class MenuEmpleadoActivity : AppCompatActivity() {
 
@@ -39,12 +41,12 @@ class MenuEmpleadoActivity : AppCompatActivity() {
                         val rol = document.getString("rol") ?: ""
 
                         // Mostrar mensaje personalizado
-                        tvBienvenida.text = "Bienvenido, $nombre $apellido!"
+                        tvBienvenida.text = "¡Bienvenido, $nombre $apellido!"
 
                         // Asignar imagen de perfil según el rol
                         when (rol.lowercase()) {
                             "administrador" -> imageViewPerfil.setImageResource(R.drawable.administrador)
-                            "empleado", "repartidor", "cliente" -> imageViewPerfil.setImageResource(R.drawable.usuario_empleado_cliente)
+                            "empleado" -> imageViewPerfil.setImageResource(R.drawable.usuario_empleado_cliente)
                             else -> imageViewPerfil.setImageResource(R.drawable.usuario_empleado_cliente)
                         }
 
@@ -63,15 +65,12 @@ class MenuEmpleadoActivity : AppCompatActivity() {
                 }
                 .addOnFailureListener {
                     tvBienvenida.text = "Hola, Usuario!"
-                    Toast.makeText(this, "Error al obtener datos del usuario", Toast.LENGTH_SHORT).show()
+                    // Mensaje Toast mejorado para ser más descriptivo
+                    Toast.makeText(this, "Error al cargar los datos del usuario.", Toast.LENGTH_SHORT).show()
                 }
         }
 
         // --- Navegación de tarjetas ---
-        findViewById<CardView>(R.id.CardViewAgregarUsuario).setOnClickListener {
-            startActivity(Intent(this, AgregarUsuarioActivity::class.java))
-        }
-
         findViewById<CardView>(R.id.CardViewInventario).setOnClickListener {
             startActivity(Intent(this, InventarioActivity::class.java))
         }
@@ -89,9 +88,9 @@ class MenuEmpleadoActivity : AppCompatActivity() {
         }
 
         // --- Cerrar sesión con confirmación ---
-        findViewById<TextView>(R.id.tvCerrarSesion).setOnClickListener {
+        findViewById<Button>(R.id.buttonCerrarSesion).setOnClickListener {
             // Crea un AlertDialog para confirmar el cierre de sesión
-            android.app.AlertDialog.Builder(this)
+            AlertDialog.Builder(this)
                 .setTitle("Cerrar Sesión")
                 .setMessage("¿Estás seguro de que quieres cerrar tu sesión?")
                 .setPositiveButton("Sí") { dialog, which ->

@@ -73,12 +73,10 @@ class AgregarProductoActivity : AppCompatActivity() {
             }
         }
 
-        // Abrir menú lateral al dar clic en el ImageView del logo
         imageViewMenu.setOnClickListener {
             drawerLayout.openDrawer(GravityCompat.END)
         }
 
-        // Opciones del menú lateral
         val menuAgregarUsuario = findViewById<TextView>(R.id.menuAgregarUsuario)
         val menuProductos = findViewById<TextView>(R.id.menuProductos)
         val menuPedidos = findViewById<TextView>(R.id.menuPedidos)
@@ -88,7 +86,6 @@ class AgregarProductoActivity : AppCompatActivity() {
 
         imageViewLogoMenu.setOnClickListener { closeDrawer() }
 
-        // --- Lógica de validación de rol para el menú ---
         val currentUserUid = FirebaseAuth.getInstance().currentUser?.uid
 
         if (currentUserUid != null) {
@@ -104,57 +101,41 @@ class AgregarProductoActivity : AppCompatActivity() {
                             menuUsuarios.visibility = View.GONE
                         }
                     } else {
-                        // Documento del usuario no existe, ocultar por seguridad
                         menuUsuarios.visibility = View.GONE
                     }
                 }
                 .addOnFailureListener { exception ->
-                    // Error al obtener el rol, ocultar por seguridad
-                    println("Error al obtener el rol del usuario: $exception")
+                    println("Error al obtener el rol del usuario: $exception.")
                     menuUsuarios.visibility = View.GONE
                 }
         } else {
-            // No hay usuario logeado, ocultar por seguridad
             menuUsuarios.visibility = View.GONE
         }
-        // --- Fin de la lógica de validación de rol ---
 
-        // --- Resaltar la opción del menú actual (NUEVO CÓDIGO) ---
-        // Primero, restablece todos los colores a su estado normal
-        val defaultColor = resources.getColor(R.color.black, theme) // O el color por defecto de tu texto
+        val defaultColor = resources.getColor(R.color.black, theme)
         menuAgregarUsuario.setTextColor(defaultColor)
         menuProductos.setTextColor(defaultColor)
-        // Agrega aquí todas las opciones de menú que tengas
         menuPedidos.setTextColor(defaultColor)
         menuUsuarios.setTextColor(defaultColor)
         menuCortesdeCaja.setTextColor(defaultColor)
         menuInfoApp.setTextColor(defaultColor)
 
-        // Luego, aplica el color gris bajo a la opción de la actividad actual
         val highlightColor = resources.getColor(R.color.gray_light, theme)
 
         when (this) {
             is AgregarUsuarioActivity -> menuAgregarUsuario.setTextColor(highlightColor)
-            is InventarioActivity -> menuProductos.setTextColor(highlightColor) // Asumiendo que InventarioActivity es "Productos"
+            is InventarioActivity -> menuProductos.setTextColor(highlightColor)
             is HistorialPedidosActivity -> menuPedidos.setTextColor(highlightColor)
             is GestionUsuariosActivity -> menuUsuarios.setTextColor(highlightColor)
             is CortesDeCajaActivity -> menuCortesdeCaja.setTextColor(highlightColor)
             is InfoAppActivity -> menuInfoApp.setTextColor(highlightColor)
-            // Agrega más casos para cada una de tus actividades de menú
         }
-        // --- Fin de la lógica de resaltado ---
-
-        // ... (resto de tu código del menú lateral) ...
 
         menuAgregarUsuario.setOnClickListener {
             drawerLayout.closeDrawer(GravityCompat.END)
             val intent = Intent(this, AgregarUsuarioActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             startActivity(intent)
-            // No uses finish() aquí si quieres que la actividad actual (desde donde se abre el menú)
-            // permanezca en la pila si no es la misma que la que se va a iniciar.
-            // Solo usa finish() si la actividad actual NO debe permanecer si es diferente de la destino.
-            // Para un menú lateral, usualmente NO querrás hacer finish() aquí.
         }
 
         menuProductos.setOnClickListener {
@@ -203,19 +184,47 @@ class AgregarProductoActivity : AppCompatActivity() {
         }
 
         buttonAgregarProducto.setOnClickListener {
+            // Limpia los errores anteriores
+            editTextNombre.error = null
+            editTextCantidad.error = null
+            editTextPrecioUnitario.error = null
+
             val nombre = editTextNombre.text.toString().trim()
-            val cantidad = editTextCantidad.text.toString().trim()
+            val cantidadStr = editTextCantidad.text.toString().trim()
             val precioTexto = editTextPrecioUnitario.text.toString().trim()
 
-            if (nombre.isEmpty() || cantidad.isEmpty() || precioTexto.isEmpty() || imagenBase64 == null) {
-                Toast.makeText(this, "Completa todos los campos y selecciona una imagen", Toast.LENGTH_SHORT).show()
-            } else {
-                val precio = obtenerPrecioComoDouble(precioTexto)
-                if (precio == null) {
-                    Toast.makeText(this, "Precio inválido", Toast.LENGTH_SHORT).show()
-                } else {
-                    guardarProductoEnFirestore(nombre, cantidad, precio)
-                }
+            var isValid = true
+
+            if (nombre.isEmpty()) {
+                editTextNombre.error = "El nombre no puede estar vacío"
+                isValid = false
+            }
+
+            val cantidad = cantidadStr.toIntOrNull()
+            if (cantidadStr.isEmpty()) {
+                editTextCantidad.error = "La cantidad no puede estar vacía"
+                isValid = false
+            } else if (cantidad == null || cantidad < 0) {
+                editTextCantidad.error = "Debe ser un número entero positivo"
+                isValid = false
+            }
+
+            val precio = obtenerPrecioComoDouble(precioTexto)
+            if (precioTexto.isEmpty()) {
+                editTextPrecioUnitario.error = "El precio no puede estar vacío"
+                isValid = false
+            } else if (precio == null || precio < 0) {
+                editTextPrecioUnitario.error = "Formato de precio no válido"
+                isValid = false
+            }
+
+            if (imagenBase64 == null) {
+                Toast.makeText(this, "Por favor, selecciona una imagen.", Toast.LENGTH_SHORT).show()
+                isValid = false
+            }
+
+            if (isValid) {
+                guardarProductoEnFirestore(nombre, cantidad!!, precio!!)
             }
         }
     }
@@ -278,12 +287,12 @@ class AgregarProductoActivity : AppCompatActivity() {
         return Base64.encodeToString(byteArray, Base64.DEFAULT)
     }
 
-    private fun guardarProductoEnFirestore(nombre: String, cantidad: String, precio: Double) {
-        progressDialog.show() // <-- Mostrar mientras guarda
+    private fun guardarProductoEnFirestore(nombre: String, cantidad: Int, precio: Double) {
+        progressDialog.show()
 
         val producto = hashMapOf(
             "nombre" to nombre,
-            "cantidad" to cantidad.toInt(),
+            "cantidad" to cantidad,
             "precioUnitario" to precio,
             "imagenBase64" to imagenBase64,
             "fechaCreacion" to com.google.firebase.Timestamp.now()
@@ -292,14 +301,14 @@ class AgregarProductoActivity : AppCompatActivity() {
         firestore.collection("productos")
             .add(producto)
             .addOnSuccessListener {
-                progressDialog.dismiss() // <-- Ocultar al terminar
-                Toast.makeText(this, "Producto agregado con éxito", Toast.LENGTH_SHORT).show()
+                progressDialog.dismiss()
+                Toast.makeText(this, "El producto ha sido agregado correctamente.", Toast.LENGTH_SHORT).show()
                 setResult(Activity.RESULT_OK)
                 limpiarCampos()
             }
-            .addOnFailureListener {
-                progressDialog.dismiss() // <-- Ocultar en caso de error también
-                Toast.makeText(this, "Error al guardar producto", Toast.LENGTH_SHORT).show()
+            .addOnFailureListener { e ->
+                progressDialog.dismiss()
+                Toast.makeText(this, "Error al agregar el producto: ${e.message}.", Toast.LENGTH_SHORT).show()
             }
     }
 
